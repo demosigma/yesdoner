@@ -5,6 +5,9 @@ body {
 	font-size: 18px;
 	color: var(--tg-theme-text-color);
 	background: var(--tg-theme-bg-color);
+	touch-action: manipulation; /* Prevents double-tap zoom */
+        -webkit-touch-callout: none; /* Disables callout on iOS */
+        -webkit-user-select: none; /* Prevents text selection */
 }
 .item-price{
 	font-weight: bold;
