@@ -8,6 +8,7 @@ body {
 	touch-action: manipulation; /* Prevents double-tap zoom */
         -webkit-touch-callout: none; /* Disables callout on iOS */
         -webkit-user-select: none; /* Prevents text selection */
+	user-select: none;
 }
 .item-price{
 	font-weight: bold;
