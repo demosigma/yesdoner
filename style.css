@@ -22,11 +22,11 @@ h2 {
 
 .inner { 
     padding-bottom: 40px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 200px 200px 200px;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: 200px 200px 200px;
     gap: 100px;
-    row-gap: 200px;
+	row-gap: 200px;
 }
 
 .img {
@@ -38,8 +38,9 @@ h2 {
 }
 
 .btn {
+	
 	display: inline-block;
-	padding: 10px 20px;  
+	padding: 10px 60px;  
 	border: none;
 	background: rgb(255, 139, 7);
 	border-radius: 10px;
@@ -75,6 +76,7 @@ h2 {
 
 
 .plus-btn {
+	padding: 10px;
     background: rgb(39, 230, 39);  
     flex-grow: 1;  
     margin-left: 14px;
@@ -82,6 +84,7 @@ h2 {
 }
 
 .minus-btn {
+	padding: 10px;
     background: rgb(233, 40, 40);  
     flex-grow: 1;  
     margin-left: 20px;
