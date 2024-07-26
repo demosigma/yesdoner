@@ -4,179 +4,267 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="style.css">
-	<title>Document</title>
-    <style>
-         .item {
-            position: relative; /* Для позиционирования описания */
-            text-align: center;
-        }
+	<title>Tasty Delivery</title>
 
-        .description {
-            color: #000000; /* Цвет текста для описания */
-            cursor: pointer; /* Изменение курсора на указатель для кликабельного текста */
-            text-decoration: underline; /* Подчёркивание для обозначения кликабельности */
-        }
-        .full-description {
-            display: none; /* Скрываем полное описание по умолчанию */
-            position: absolute; /* Позиционирование поверх изображения */
-            bottom: 10px; /* Отступ от низа */
-            left: 50%; /* Центрирование по горизонтали */
-            transform: translateX(-50%); /* Центрирование по горизонтали */
-            background-color: rgba(255, 255, 255, 0.733); /* Полупрозрачный фон */
-            padding: 10px; /* Отступ внутри описания */
-            border-radius: 5px; /* Закругление углов */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Тень для описания */
-            z-index: 1; /* Поверх других элементов */
-        }
-    </style>
 </head>
 <body>
-    <div class="container">
-       <h2>Food</h2>
-       <div class="inner" id="food-menu">
-          <div class="item">
-             <img src="1.png" alt="Doner" class="img"> 
-             <p class="item-name">Doner</p>
-             <p class="description" onclick="toggleDescription(this)">Тартылған, ж...</p>
-             <p class="full-description" onclick="hideDescription(this)" style="display:none;">Тартылған, жұқа кесілген сиыр еті, салат, қызанақ, пияз және соустармен бірге қытырлық лавашқа оралған танымал тағам.</p>
-             <button class="btn" id="btn1">Add for 1500₸</button> 
-          </div>
-          <div class="item">
-             <img src="2.png" alt="Fries" class="img" onclick="showTooltip(event, 'Fries')">
-             <p class="item-name">Fries</p>
-             <p class="description" onclick="toggleDescription(this)">Қытырлақ алт...</p>
-             <p class="full-description" onclick="hideDescription(this)" style="display:none;">Қытырлақ алтын картоптар, гарнир ретінде өте жақсы.</p>
-             <button class="btn" id="btn2">Add for 1500₸</button>
-          </div>
-          <div class="item">
-             <img src="4.png" alt="Burger" class="img" onclick="showTooltip(event, 'Burger')">
-             <p class="item-name">Burger</p>
-             <p class="description" onclick="toggleDescription(this)">Екі нан арас...</p>
-             <p class="full-description" onclick="hideDescription(this)" style="display:none;">Екі нан арасында сиыр еті, салат, қызанақ, пияз, ірімшік, маринадталған қияр және кетчуп, горчица, майонез сияқты соустармен дайындалады.</p>
-             <button class="btn" id="btn3">Add for 1500₸</button>
-          </div>
-          <div class="item">
-             <img src="10.png" alt="Caesar Salad" class="img" onclick="showTooltip(event, 'Caesar Salad')">
-             <p class="item-name">Caesar Salad</p>
-             <p class="description" onclick="toggleDescription(this)">Қытырлақ на...</p>
-             <p class="full-description" onclick="hideDescription(this)" style="display:none;">Қытырлақ нан, пармезан ірімшігі, салат және кремді цезарь соусымен дайындалады. Жеңіл әрі дәмді тағам.</p>
-             <button class="btn" id="btn4">Add for 1500₸</button>
-          </div>
-          <div class="item">
-             <img src="9.png" alt="Butter Chicken" class="img" onclick="showTooltip(event, 'Butter Chicken')">
-             <p class="item-name">Butter Chicken</p>
-             <p class="description" onclick="toggleDescription(this)">Томат негіз...</p>
-             <p class="full-description" onclick="hideDescription(this)" style="display:none;">Томат негізіндегі соуспен маринадталған жұмсақ тауық еті, қасына ыстық күріш беріледі.</p>
-             <button class="btn" id="btn5">Add for 1500₸</button>
-          </div>
-          <div class="item">
-             <img src="6.png" alt="Plov" class="img" onclick="showTooltip(event, 'Plov')">
-             <p class="item-name">Plov</p>
-             <p class="description" onclick="toggleDescription(this)">Палау - Орт...</p>
-             <p class="full-description" onclick="hideDescription(this)" style="display:none;">Палау - Орта Азияның дәстүрлі тағамы, ұзын дәнді күріш, қой еті, сәбіз және пияз қазанда пісіріліп, ет жұмсақ әрі дәмді болып шығады</p>
-             <button class="btn" id="btn6">Add for 1500₸</button>
-          </div>
-       </div>
-       <h2>Drinks</h2>
-       <div class="inner" id="drinks-menu">
-          <div class="item">
-             <img src="3.png" alt="Iced Coffee" class="img" onclick="showTooltip(event, 'Iced Coffee')">
-             <p class="item-name">Iced Coffee</p>
-             <p class="description" onclick="toggleDescription(this)">Кофе қосылғ...</p>
-             <p class="full-description" onclick="hideDescription(this)" style="display:none;">Кофе қосылған сергітетін және ынталандыратын сусын, әдетте қант немесе сироппен тәттілендіріледі</p>
-             <button class="btn" id="btn7">Add for 1500₸</button>
-          </div>
-          <div class="item">
-             <img src="5.png" alt="Mojito" class="img" onclick="showTooltip(event, 'Mojito')">
-             <p class="item-name">Mojito</p>
-             <p class="description" onclick="toggleDescription(this)">Жалбыз жап...</p>
-             <p class="full-description" onclick="hideDescription(this)" style="display:none;">Жалбыз жапырақтары, лайм шырыны, газдалған сусынмен дайындалатын коктейль.</p>
-             <button class="btn" id="btn8">Add for 1500₸</button>
-          </div>
-          <div class="item">
-             <img src="11.png" alt="Tea" class="img" onclick="showTooltip(event, 'Tea')">
-             <p class="item-name">Tea</p>
-             <p class="description" onclick="toggleDescription(this)">Сүт қосылғ...</p>
-             <p class="full-description" onclick="hideDescription(this)" style="display:none;">Сүт қосылған қара шай. Қасына нават, тары және бал беріледі</p>
-             <button class="btn" id="btn9">Add for 1500₸</button>
-	  </div>
-          <div class="item">
-             <img src="12.png" alt="Chocolate Milkshake" class="img" onclick="showTooltip(event, 'Chocolate Milkshake')">
-             <p class="item-name">Choco Milkshake</p>
-             <p class="description" onclick="toggleDescription(this)">Сүт, балм...</p>
-             <p class="full-description" onclick="hideDescription(this)" style="display:none;">Сүт, балмұздақ және шоколад сиропымен жасалған тәтті сусын.</p>
-             <button class="btn" id="btn10">Add for 1500₸</button>
-          </div>
-          <div class="item">
-             <img src="14.png" alt="Lemonade" class="img" onclick="showTooltip(event, 'Lemonade')">
-             <p class="item-name">Lemonade</p>
-             <p class="description" onclick="toggleDescription(this)">Лимон шы...</p>
-             <p class="full-description" onclick="hideDescription(this)" style="display:none;">Лимон шырыны, су және қанттан дайындалатын сергітетін сусын. Дайындалуда оңай, бірақ дәмді сусын, шөлді қандыруға өте қолайлы.</p>
-             <button class="btn" id="btn11">Add for 1500₸</button>
-          </div>
-          <div class="item">
-             <img src="15.png" alt="Boba Tea" class="img" onclick="showTooltip(event, 'Boba Tea')">
-             <p class="item-name">Boba Tea</p>
-             <p class="description" onclick="toggleDescription(this)">Боба нем...</p>
-             <p class="full-description" onclick="hideDescription(this)" style="display:none;">Боба немесе тапиока шарлары қосылған шай. Тойымды әрі дәмді.</p>
-             <button class="btn" id="btn12">Add for 1500₸</button>
-          </div>
-       </div>
-    
-    <h2>Desserts</h2>
-    <div class="inner" id="desserts-menu">
-       <div class="item">
-          <img src="7.png" alt="Ice Cream" class="img" onclick="showTooltip(event, 'Ice Cream')">
-          <p class="item-name">Ice Cream</p>
-          <p class="description" onclick="toggleDescription(this)">Cүт, қант...</p>
-          <p class="full-description" onclick="hideDescription(this)" style="display:none;">Cүт, қант және дәмдеушілермен дайындалатын мұздатылған сергітетін десерт.</p>
-          <button class="btn" id="btn13">Add for 1500₸</button>
-       </div>
-       <div class="item">
-          <img src="8.png" alt="Cheesecake" class="img" onclick="showTooltip(event, 'Cheesecake')">
-          <p class="item-name">Cheesecake</p>
-          <p class="description" onclick="toggleDescription(this)">Печенье және...</p>
-          <p class="full-description" onclick="hideDescription(this)" style="display:none;">Печенье және кремді ірімшікті қоспамен дайындалатын дәмі ерекше десерт</p>
-          <button class="btn" id="btn14">Add for 1500₸</button>
-       </div>
-       <div class="item">
-          <img src="13.png" alt="Donut" class="img" onclick="showTooltip(event, 'Donut')">
-          <p class="item-name">Donut</p>
-          <p class="description" onclick="toggleDescription(this)">Дөңгелек фор...</p>
-          <p class="full-description" onclick="hideDescription(this)" style="display:none;">Дөңгелек формасында қуырылған, үстінен тәтті глазурь құйылған қамыр. </p>
-          <button class="btn" id="btn15">Add for 1500₸</button>
-       </div>
-       <div class="item">
-          <img src="16.png" alt="Chocolate Cake" class="img" onclick="showTooltip(event, 'Chocolate Cake')">
-          <p class="item-name">Chocolate Cake</p>
-          <p class="description" onclick="toggleDescription(this)">Шоколадты бис...</p>
-          <p class="full-description" onclick="hideDescription(this)" style="display:none;">Шоколадты бисквиттен жасалған қабаттардын арасынан тәтті шоколадты крем жағылады.</p>
-          <button class="btn" id="btn16">Add for 1500₸</button>
-       </div>
-    </div>
-    </div>
-</div>
-    <div class="usercard" id="usercard"></div>
-    <script>
-       function toggleDescription(element) {
-           const fullDescription = element.nextElementSibling; // Получаем следующий элемент (полное описание)
-           
-           if (fullDescription.style.display === "none" || fullDescription.style.display === "") {
-               fullDescription.style.display = "block"; // Показываем полное описание
-           } else {
-               fullDescription.style.display = "none"; // Скрываем полное описание
-           }
-       }
-    </script>
-    
-    <script>
-        function hideDescription(element) {
-          element.style.display = 'none'; // Hide the clicked element
-        }
-      </script>
-      
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="app.js"></script>
- </body>
+   <div class="container">
+      <h2>Ыстық тағамдар</h2>
+      <div class="inner" id="food-menu">
+         <div class="item">
+            <div class="image-container">
+               <img src="1.png" alt="Донер" class="img">  
+               <span class="item-count" style="display: none;">0</span>
+            </div>
+            <p class="item-price">1500₸</p>
+            <p class="item-name">Донер</p>
+            <p class="description" onclick="toggleDescription(this)">Тартылған, ж...</p>
+            <p class="full-description" onclick="hideDescription(this)" style="display:none;">Тартылған, жұқа кесілген сиыр еті, салат, қызанақ, пияз және соустармен бірге қытырлық лавашқа оралған танымал тағам.</p>
+            <div class="button-container" style="display: none;">
+               <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+               <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+            </div>
+            <button class="btn add-btn" id="btn1" onclick="addItem(this)">Add for 1500₸</button>  
+         </div>
+         <div class="item">
+            <div class="image-container">
+               <img src="2.png" alt="Фри картобы" class="img">  
+               <span class="item-count" style="display: none;">0</span>
+            </div>
+            <p class="item-price">1500₸</p>
+            <p class="item-name">Фри картобы</p>
+            <p class="description" onclick="toggleDescription(this)">Қытырлақ алт...</p>
+            <p class="full-description" onclick="hideDescription(this)" style="display:none;">Қытырлақ алтын картоптар, гарнир ретінде өте жақсы.</p>
+            <div class="button-container" style="display: none;">
+               <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+               <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+            </div>
+            <button class="btn" id="btn2" onclick="addItem(this)">Add for 1500₸</button>
+         </div>
+         <div class="item">
+            <div class="image-container">
+               <img src="4.png" alt="Бургер" class="img">  
+               <span class="item-count" style="display: none;">0</span>
+            </div>
+            <p class="item-price">1500₸</p>
+            <p class="item-name">Бургер</p>
+            <p class="description" onclick="toggleDescription(this)">Екі нан арас...</p>
+            <p class="full-description" onclick="hideDescription(this)" style="display:none;">Екі нан арасында сиыр еті, салат, қызанақ, пияз, ірімшік, маринадталған қияр және кетчуп, горчица, майонез сияқты соустармен дайындалады.</p>
+            <div class="button-container" style="display: none;">
+               <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+               <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+            </div>
+            <button class="btn" id="btn3" onclick="addItem(this)">Add for 1500₸</button>
+         </div>
+         <div class="item">
+            <div class="image-container">
+               <img src="10.png" alt="Цезарь салады" class="img">  
+               <span class="item-count" style="display: none;">0</span>
+            </div>
+            <p class="item-price">1500₸</p>
+            <p class="item-name">Цезарь салады</p>
+            <p class="description" onclick="toggleDescription(this)">Қытырлақ на...</p>
+            <p class="full-description" onclick="hideDescription(this)" style="display:none;">Қытырлақ нан, пармезан ірімшігі, салат және кремді цезарь соусымен дайындалады. Жеңіл әрі дәмді тағам.</p>
+            <div class="button-container" style="display: none;">
+               <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+               <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+            </div>
+            <button class="btn" id="btn4" onclick="addItem(this)">Add for 1500₸</button>
+         </div>
+         <div class="item">
+            <div class="image-container">
+               <img src="9.png" alt="Карри" class="img">  
+               <span class="item-count" style="display: none;">0</span>
+            </div>
+            <p class="item-price">1500₸</p>
+            <p class="item-name">Карри</p>
+            <p class="description" onclick="toggleDescription(this)">Томат негіз...</p>
+            <p class="full-description" onclick="hideDescription(this)" style="display:none;">Томат негізіндегі соуспен маринадталған жұмсақ тауық еті, қасына ыстық күріш беріледі.</p>
+            <div class="button-container" style="display: none;">
+               <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+               <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+            </div>
+            <button class="btn" id="btn5" onclick="addItem(this)">Add for 1500₸</button>
+         </div>
+         <div class="item">
+            <div class="image-container">
+               <img src="6.png" alt="Палау" class="img">  
+               <span class="item-count" style="display: none;">0</span>
+            </div>
+            <p class="item-price">1500₸</p>
+            <p class="item-name">Палау</p>
+            <p class="description" onclick="toggleDescription(this)">Палау - Орт...</p>
+            <p class="full-description" onclick="hideDescription(this)" style="display:none;">Палау - Орта Азияның дәстүрлі тағамы, ұзын дәнді күріш, қой еті, сәбіз және пияз қазанда пісіріліп, ет жұмсақ әрі дәмді болып шығады</p>
+            <div class="button-container" style="display: none;">
+               <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+               <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+            </div>
+            <button class="btn" id="btn6" onclick="addItem(this)">Add for 1500₸</button>
+         </div>
+      </div>
+      <h2>Сусындар</h2>
+      <div class="inner" id="drinks-menu">
+         <div class="item">
+            <div class="image-container">
+               <img src="3.png" alt="Айс кофе" class="img">  
+               <span class="item-count" style="display: none;">0</span>
+            </div>
+            <p class="item-price">1500₸</p>
+            <p class="item-name">Айс кофе</p>
+            <p class="description" onclick="toggleDescription(this)">Кофе қосылғ...</p>
+            <p class="full-description" onclick="hideDescription(this)" style="display:none;">Кофе қосылған сергітетін және ынталандыратын сусын, әдетте қант немесе сироппен тәттілендіріледі</p>
+            <div class="button-container" style="display: none;">
+               <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+               <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+            </div>
+            <button class="btn" id="btn7" onclick="addItem(this)">Add for 1500₸</button>
+         </div>
+         <div class="item">
+            <div class="image-container">
+               <img src="5.png" alt="Мохито" class="img">  
+               <span class="item-count" style="display: none;">0</span>
+            </div>
+            <p class="item-price">1500₸</p>
+            <p class="item-name">Мохито</p>
+            <p class="description" onclick="toggleDescription(this)">Жалбыз жап...</p>
+            <p class="full-description" onclick="hideDescription(this)" style="display:none;">Жалбыз жапырақтары, лайм шырыны, газдалған сусынмен дайындалатын коктейль.</p>
+            <div class="button-container" style="display: none;">
+               <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+               <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+            </div>
+            <button class="btn" id="btn8" onclick="addItem(this)">Add for 1500₸</button>
+         </div>
+         <div class="item">
+            <div class="image-container">
+               <img src="11.png" alt="Шай" class="img">  
+               <span class="item-count" style="display: none;">0</span>
+            </div>
+            <p class="item-price">1500₸</p>
+            <p class="item-name">Шай</p>
+            <p class="description" onclick="toggleDescription(this)">Сүт қосылғ...</p>
+            <p class="full-description" onclick="hideDescription(this)" style="display:none;">Сүт қосылған қара шай. Қасына нават, тары және бал беріледі</p>
+            <div class="button-container" style="display: none;">
+               <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+               <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+            </div>
+            <button class="btn" id="btn9" onclick="addItem(this)">Add for 1500₸</button>
+         </div>
+         <div class="item">
+            <div class="image-container">
+               <img src="12.png" alt="Шоколадты милкшейк" class="img">  
+               <span class="item-count" style="display: none;">0</span>
+            </div>
+            <p class="item-price">1500₸</p>
+            <p class="item-name">Шоко милкшейк</p>
+            <p class="description" onclick="toggleDescription(this)">Сүт, балм...</p>
+            <p class="full-description" onclick="hideDescription(this)" style="display:none;">Сүт, балмұздақ және шоколад сиропымен жасалған тәтті сусын.</p>
+            <div class="button-container" style="display: none;">
+               <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+               <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+            </div>
+            <button class="btn" id="btn10" onclick="addItem(this)">Add for 1500₸</button>
+         </div>
+         <div class="item">
+            <div class="image-container">
+               <img src="14.png" alt="Лимонад" class="img">  
+               <span class="item-count" style="display: none;">0</span>
+            </div>
+            <p class="item-price">1500₸</p>
+            <p class="item-name">Лимонад</p>
+            <p class="description" onclick="toggleDescription(this)">Лимон шы...</p>
+            <p class="full-description" onclick="hideDescription(this)" style="display:none;">Лимон шырыны, су және қанттан дайындалатын сергітетін сусын. Дайындалуда оңай, бірақ дәмді сусын, шөлді қандыруға өте қолайлы.</p>
+            <div class="button-container" style="display: none;">
+               <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+               <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+            </div>
+            <button class="btn" id="btn11" onclick="addItem(this)">Add for 1500₸</button>
+         </div>
+         <div class="item">
+            <div class="image-container">
+               <img src="15.png" alt="Боба шайы" class="img">  
+               <span class="item-count" style="display: none;">0</span>
+            </div>
+            <p class="item-price">1500₸</p>
+            <p class="item-name">Боба шайы</p>
+            <p class="description" onclick="toggleDescription(this)">Боба нем...</p>
+            <p class="full-description" onclick="hideDescription(this)" style="display:none;">Боба немесе тапиока шарлары қосылған шай. Тойымды әрі дәмді.</p>
+            <div class="button-container" style="display: none;">
+               <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+               <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+            </div>
+            <button class="btn" id="btn12" onclick="addItem(this)">Add for 1500₸</button>
+         </div>
+      </div>
+      <h2>Десерттер</h2>
+      <div class="inner" id="desserts-menu">
+         <div class="item">
+            <div class="image-container">
+               <img src="7.png" alt="Балмұздақ" class="img">  
+               <span class="item-count" style="display: none;">0</span>
+            </div>
+            <p class="item-price">1500₸</p>
+            <p class="item-name">Балмұздақ</p>
+            <p class="description" onclick="toggleDescription(this)">Cүт, қант...</p>
+            <p class="full-description" onclick="hideDescription(this)" style="display:none;">Cүт, қант және дәмдеушілермен дайындалатын мұздатылған сергітетін десерт.</p>
+            <div class="button-container" style="display: none;">
+               <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+               <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+            </div>
+            <button class="btn" id="btn13" onclick="addItem(this)">Add for 1500₸</button>
+         </div>
+         <div class="item">
+            <div class="image-container">
+               <img src="8.png" alt="Чизкейк" class="img">  
+               <span class="item-count" style="display: none;">0</span>
+            </div>
+            <p class="item-price">1500₸</p>
+            <p class="item-name">Чизкейк</p>
+            <p class="description" onclick="toggleDescription(this)">Печенье және...</p>
+            <p class="full-description" onclick="hideDescription(this)" style="display:none;">Печенье және кремді ірімшікті қоспамен дайындалатын дәмі ерекше десерт</p>
+            <div class="button-container" style="display: none;">
+               <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+               <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+            </div>
+            <button class="btn" id="btn14" onclick="addItem(this)">Add for 1500₸</button>
+         </div>
+         <div class="item">
+            <div class="image-container">
+               <img src="13.png" alt="Донат" class="img">  
+               <span class="item-count" style="display: none;">0</span>
+            </div>
+            <p class="item-price">1500₸</p>
+            <p class="item-name">Донат</p>
+            <p class="description" onclick="toggleDescription(this)">Дөңгелек фор...</p>
+            <p class="full-description" onclick="hideDescription(this)" style="display:none;">Дөңгелек формасында қуырылған, үстінен тәтті глазурь құйылған қамыр. </p>
+            <div class="button-container" style="display: none;">
+               <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+               <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+            </div>
+            <button class="btn" id="btn15" onclick="addItem(this)">Add for 1500₸</button>
+         </div>
+         <div class="item">
+            <div class="image-container">
+               <img src="16.png" alt="Шоколадты торт" class="img">  
+               <span class="item-count" style="display: none;">0</span>
+            </div>
+            
+            <p class="item-price">1500₸</p>
+            <p class="item-name">Шоколадты торт</p>
+            <p class="description" onclick="toggleDescription(this)">Шоколадты бис...</p>
+            <p class="full-description" onclick="hideDescription(this)" style="display:none;">Шоколадты бисквиттен жасалған қабаттардын арасынан тәтті шоколадты крем жағылады.</p>
+            <div class="button-container" style="display: none;">
+               <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+               <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+            </div>
+            <button class="btn" id="btn16" onclick="addItem(this)">Add for 1500₸</button>
+         </div>
+      </div>
+   </div>
+   </div>
+   
+   <div class="usercard" id="usercard"></div>
+   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+   <script src="app.js"></script>
+</body>
    
 </html>
