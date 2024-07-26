@@ -25,7 +25,7 @@ h2 {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	grid-template-rows: 200px 200px 200px;
-    gap: 130px;
+    gap: 100px;
 }
 
 .img {
