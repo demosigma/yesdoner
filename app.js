@@ -4,36 +4,89 @@ tg.expand();
 
 tg.MainButton.textColor = '#FFFFFF';
 tg.MainButton.color = '#2cab37';
+tg.MainButton.text = "Менің тапсырысым"; // "My Order"
+let selectedItems = []; // Array to hold selected items
 
-let item = "";
+// Make sure the main button is visible
+tg.MainButton.isVisible = true;
 
-let btn1 = document.getElementById("btn1");
-let btn2 = document.getElementById("btn2");
-let btn3 = document.getElementById("btn3");
-let btn4 = document.getElementById("btn4");
-let btn5 = document.getElementById("btn5");
-let btn6 = document.getElementById("btn6");
+function addItem(button) {
+    const itemElement = button.closest('.item');
+    const itemName = itemElement.querySelector('.item-name').textContent; // Get item name
+    let itemCountElement = itemElement.querySelector('.item-count');
+    let count = parseInt(itemCountElement.textContent) || 0;
+    count++;
+    itemCountElement.textContent = count;
 
+    updateUI(itemElement, count);
+    updateSelectedItems(itemName, count); // Update the selected items array
+}
 
+function updateCount(button, change) {
+    const itemElement = button.closest('.item');
+    let itemCountElement = itemElement.querySelector('.item-count');
+    let count = parseInt(itemCountElement.textContent) || 0;
+    count += change;
 
-Telegram.WebApp.onEvent("mainButtonClicked", function(){
-	tg.sendData(item);
+    if (count < 0) count = 0;
+    itemCountElement.textContent = count;
+
+    updateUI(itemElement, count);
+    const itemName = itemElement.querySelector('.item-name').textContent;
+    updateSelectedItems(itemName, count); // Update the selected items array
+}
+
+function updateSelectedItems(itemName, count) {
+    const existingItem = selectedItems.find(item => item.name === itemName);
+    if (existingItem) {
+        existingItem.count = count; // Update existing item's count
+    } else {
+        selectedItems.push({ name: itemName, count }); // Add new item if it doesn't exist
+    }
+}
+
+function updateUI(itemElement, count) {
+    const itemCountDisplay = itemElement.querySelector('.item-count');
+    const buttonContainer = itemElement.querySelector('.button-container');
+    const addButton = itemElement.querySelector('.btn:not(.minus-btn):not(.plus-btn)'); // Select the add button
+
+    if (count > 0) {
+        itemCountDisplay.style.display = 'block';
+        buttonContainer.style.display = 'flex';
+        addButton.style.display = 'none';
+    } else {
+        itemCountDisplay.style.display = 'none';
+        buttonContainer.style.display = 'none';
+        addButton.style.display = 'inline-block';
+    }
+}
+
+function hideDescription(element) {
+    element.style.display = 'none'; // Hide the clicked element
+}
+
+function toggleDescription(element) {
+    const fullDescription = element.nextElementSibling; // Get the next sibling (full description)
+
+    if (fullDescription.style.display === "none" || fullDescription.style.display === "") {
+        fullDescription.style.display = "block"; // Show full description
+    } else {
+        fullDescription.style.display = "none"; // Hide full description
+    }
+}
+
+// Handle main button click event
+// Handle main button click event
+Telegram.WebApp.onEvent("mainButtonClicked", function() {
+    const orderData = JSON.stringify(selectedItems); // Convert selected items to JSON string
+    tg.sendData(orderData); // Send selected items
+
+    // Redirect to the order summary page (assuming it's a separate HTML file)
+    window.location.href = "order.html"; // Replace with your actual order summary page
 });
 
 
+// Function to display order summary or other actions can be added here
 
+// Example of how to initialize user card or other elements if needed
 let usercard = document.getElementById("usercard");
-
-let p = document.createElement("p");
-
-p.innerText = `${tg.initDataUnsafe.user.first_name}
-${tg.initDataUnsafe.user.last_name}`;
-
-usercard.appendChild(p);
-
-
-
-
-
-
-
