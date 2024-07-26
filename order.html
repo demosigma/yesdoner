@@ -14,12 +14,15 @@
     <script>
         let tg = window.Telegram.WebApp;
 
+        // Retrieve order data from local storage
+        const orderData = localStorage.getItem('orderData');
+
         // Function to display order details
         function displayOrderDetails(orderData) {
             const orderDetailsDiv = document.getElementById('order-details');
             const items = JSON.parse(orderData); // Parse the JSON string
 
-            if (items.length === 0) {
+            if (!items || items.length === 0) {
                 orderDetailsDiv.innerHTML = '<p>No items in your order.</p>';
                 return;
             }
@@ -27,23 +30,30 @@
             let htmlContent = '<ul>';
             items.forEach(item => {
                 if (item.count > 0) {
-                    htmlContent += <li>${item.name}: ${item.count}</li>;
+                    htmlContent += `<li>${item.name}: ${item.count}</li>`;
                 }
             });
             htmlContent += '</ul>';
             orderDetailsDiv.innerHTML = htmlContent;
         }
 
-        // Get data from Telegram Web App
-        tg.onEvent('mainButtonClicked', function(data) {
-            const orderData = data; // This will be the JSON string sent earlier
+        // Display the order details if available
+        if (orderData) {
             displayOrderDetails(orderData);
-        });
+            localStorage.removeItem('orderData'); // Clear the data after displaying
+        } else {
+            document.getElementById('order-details').innerHTML = '<p>No order data found.</p>';
+        }
 
         // Handle back button click
         document.getElementById('back-button').addEventListener('click', function() {
             window.history.back(); // Go back to the previous page
         });
+
+        // Clear local storage on page load
+        window.onload = function() {
+            localStorage.removeItem('orderData');
+        };
     </script>
 </body>
 </html>
