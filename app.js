@@ -84,23 +84,8 @@ Telegram.WebApp.onEvent("mainButtonClicked", function() {
     window.location.href = "order.html"; // Redirect to order summary page
 });
 
-// Function to load selected items from local storage
-function loadSelectedItems() {
-    const storedItems = localStorage.getItem('selectedItems');
-    if (storedItems) {
-        selectedItems = JSON.parse(storedItems);
-        // Update your UI based on the loaded selectedItems
-        updateUIWithSelectedItems(selectedItems);
-    }
-}
 
-// Call this function when the page loads
-window.onload = function() {
-    loadSelectedItems();
-};
-function updateLocalStorage(selectedItems) {
-    localStorage.setItem('selectedItems', JSON.stringify(selectedItems));
-}
+// Function to display order summary or other actions can be added here
 
 // Example of how to initialize user card or other elements if needed
 let usercard = document.getElementById("usercard");
