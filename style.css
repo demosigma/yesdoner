@@ -12,12 +12,12 @@ body {
 h2 {
     text-align: center; /* Center the headings */
     font-weight:bold; /* Make the font bold */
-    padding-left: 30px;
+    
 	margin-top: 110px;
     
 }
 .container {
-	max-width: 420px;
+	max-width: 390px;
 }
 
 .inner { 
