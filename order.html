@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Summary</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <h1>Order Summary</h1>
+    <div id="order-details"></div>
+    <button id="back-button">Back</button>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+
+        // Function to display order details
+        function displayOrderDetails(orderData) {
+            const orderDetailsDiv = document.getElementById('order-details');
+            const items = JSON.parse(orderData); // Parse the JSON string
+
+            if (items.length === 0) {
+                orderDetailsDiv.innerHTML = '<p>No items in your order.</p>';
+                return;
+            }
+
+            let htmlContent = '<ul>';
+            items.forEach(item => {
+                if (item.count > 0) {
+                    htmlContent += <li>${item.name}: ${item.count}</li>;
+                }
+            });
+            htmlContent += '</ul>';
+            orderDetailsDiv.innerHTML = htmlContent;
+        }
+
+        // Get data from Telegram Web App
+        tg.onEvent('mainButtonClicked', function(data) {
+            const orderData = data; // This will be the JSON string sent earlier
+            displayOrderDetails(orderData);
+        });
+
+        // Handle back button click
+        document.getElementById('back-button').addEventListener('click', function() {
+            window.history.back(); // Go back to the previous page
+        });
+    </script>
+</body>
+</html>
