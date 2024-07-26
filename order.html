@@ -60,39 +60,6 @@
         window.onload = function() {
             localStorage.removeItem('orderData');
         };
-        // In order_summary.html
-
-// Function to load selected items from local storage
-function loadSelectedItemsForSummary() {
-    const storedItems = localStorage.getItem('selectedItems');
-    return storedItems ? JSON.parse(storedItems) : [];
-}
-
-// Display order details using loaded items
-function displayOrderDetails() {
-    const items = loadSelectedItemsForSummary();
-    const orderDetailsDiv = document.getElementById('order-details');
-
-    if (!items || items.length === 0) {
-        orderDetailsDiv.innerHTML = '<p>No items in your order.</p>';
-        return;
-    }
-
-    let htmlContent = '<ul>';
-    items.forEach(item => {
-        if (item.count > 0) {
-            htmlContent += <li>${item.name}: ${item.count}</li>;
-        }
-    });
-    htmlContent += '</ul>';
-    orderDetailsDiv.innerHTML = htmlContent;
-}
-
-// Call this function when the page loads
-window.onload = function() {
-    displayOrderDetails();
-};
-
     </script>
 </body>
 </html>
