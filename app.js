@@ -9,7 +9,7 @@ let selectedItems = []; // Array to hold selected items
 
 // Make sure the main button is visible
 tg.MainButton.isVisible = true;
-tg.BackButton.isVisible = true;
+tg.BackButton.isVisible = false;
 function addItem(button) {
     const itemElement = button.closest('.item');
     const itemName = itemElement.querySelector('.item-name').textContent; // Get item name
