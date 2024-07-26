@@ -9,11 +9,12 @@
 <body>
     <h1>Order Summary</h1>
     <div id="order-details"></div>
-    <button id="back-button">Back</button>
+    
 
     <script>
         let tg = window.Telegram.WebApp;
         tg.MainButton.isVisible = true;
+        tg.BackButton.isVisible = true;
         // Retrieve order data from local storage
         const orderData = localStorage.getItem('orderData');
 
@@ -46,9 +47,12 @@
         }
 
         // Handle back button click
-        document.getElementById('back-button').addEventListener('click', function() {
-            window.history.back(); // Go back to the previous page
-        });
+        Telegram.WebApp.onEvent("backButtonClicked", function() {
+    const orderData = JSON.stringify(selectedItems); // Convert selected items to JSON string
+    localStorage.setItem('orderData', orderData); // Store data in local storage
+    tg.sendData(orderData); // Send selected items
+    window.location.href = "order.html"; // Redirect to order summary page
+});
 
         // Clear local storage on page load
         window.onload = function() {
