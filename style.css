@@ -17,16 +17,16 @@ h2 {
     
 }
 .container {
-	max-width: 390px;
+	max-width: 420px;
 }
 
 .inner { 
     padding-bottom: 40px;
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	grid-template-rows: 200px 200px 200px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 200px 200px 200px;
     gap: 100px;
-	row-gap: 200px;
+    row-gap: 200px;
 }
 
 .img {
@@ -39,15 +39,12 @@ h2 {
 
 .btn {
 	display: inline-block;
-
 	border: none;
 	background: rgb(255, 139, 7);
 	border-radius: 10px;
 	color: #fff;
 	text-transform: uppercase;
 	font-weight: 600;
-
-
 	transition: background .2s linear;
 }
 
@@ -73,14 +70,6 @@ h2 {
     margin-top: 10px;  
 }
 
-.btn {  
-    padding: 10px;  
-    border: none;  
-    border-radius: 10px;  
-    color: #fff;  
-    text-transform: uppercase;  
-    font-weight: 700;  
-}
 
 .plus-btn {
     background: rgb(39, 230, 39);  
