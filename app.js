@@ -79,10 +79,9 @@ function toggleDescription(element) {
 // Handle main button click event
 Telegram.WebApp.onEvent("mainButtonClicked", function() {
     const orderData = JSON.stringify(selectedItems); // Convert selected items to JSON string
+    localStorage.setItem('orderData', orderData); // Store data in local storage
     tg.sendData(orderData); // Send selected items
-
-    // Redirect to the order summary page (assuming it's a separate HTML file)
-    window.location.href = "order.html"; // Replace with your actual order summary page
+    window.location.href = "order_summary.html"; // Redirect to order summary page
 });
 
 
