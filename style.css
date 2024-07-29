@@ -13,6 +13,27 @@ body {
 .item-price{
 	font-weight: bold;
 }
+.floating-button {
+    position: fixed;
+    bottom: 20px; /* Distance from bottom */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Adjust for centering */
+    width: calc(100% - 40px); /* Full width minus padding */
+    max-width: 600px; /* Optional max width */
+    background-color: #28a745; /* Green color */
+    color: white; /* Text color */
+    text-align: center; /* Center text */
+    padding: 15px; /* Padding around text */
+    border-radius: 25px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 18px; /* Font size */
+    z-index: 1000; /* Ensure it's on top of other elements */
+}
+
+.floating-button:hover {
+    background-color: #218838; /* Darker green on hover */
+}
 h2 {
     text-align: center; /* Center the headings */
     font-weight:bold; /* Make the font bold */
