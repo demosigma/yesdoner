@@ -77,14 +77,12 @@ function toggleDescription(element) {
 
 // Handle main button click event
 // Handle main button click event
-// Assuming selectedItems is defined and contains your data
-const tg = window.Telegram.WebApp;
- tg.onEvent("mainButtonClicked", function() {
-            const orderData = JSON.stringify(selectedItems); // Convert selected items to JSON string
-            localStorage.setItem('orderData', orderData); // Store data in local storage
-            tg.sendData(orderData); // Send selected items to Telegram
-            window.location.href = "order.html"; // Redirect to order summary page
-        });
+Telegram.WebApp.onEvent("mainButtonClicked", function() {
+    const orderData = JSON.stringify(selectedItems); // Convert selected items to JSON string
+    localStorage.setItem('orderData', orderData); // Store data in local storage
+    tg.sendData(orderData); // Send selected items
+    window.location.href = "order.html"; // Redirect to order summary page
+});
 
 
 // Function to display order summary or other actions can be added here
