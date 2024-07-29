@@ -77,9 +77,11 @@ function toggleDescription(element) {
 
 // Handle main button click event
 // Handle main button click event
+// Handle main button click event
 Telegram.WebApp.onEvent("mainButtonClicked", function() {
-    
-    window.location.href = "order.html"; // Redirect to order summary page
+    const orderData = JSON.stringify(selectedItems);
+    const encodedData = encodeURIComponent(orderData); // Encode the data for URL
+    window.location.href = order_summary.html?data=${encodedData}; // Redirect with URL parameter
 });
 
 
