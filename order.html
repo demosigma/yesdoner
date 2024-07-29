@@ -24,16 +24,7 @@
         tg.MainButton.isVisible = true;
         tg.BackButton.isVisible = true;
         // Retrieve order data from local storage
-        let tg = window.Telegram.WebApp;
-
-        // Function to get URL parameters
-        function getUrlParameter(name) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(name);
-        }
-
-        // Retrieve order data from URL parameters
-        const orderData = getUrlParameter('data');
+        const orderData = localStorage.getItem('orderData');
 
         // Function to display order details
         function displayOrderDetails(orderData) {
@@ -48,7 +39,7 @@
             let htmlContent = '<ul>';
             items.forEach(item => {
                 if (item.count > 0) {
-                    htmlContent += <li>${item.name}: ${item.count}</li>;
+                    htmlContent += `<li>${item.name}: ${item.count}</li>`;
                 }
             });
             htmlContent += '</ul>';
@@ -58,6 +49,7 @@
         // Display the order details if available
         if (orderData) {
             displayOrderDetails(orderData);
+            localStorage.removeItem('orderData'); // Clear the data after displaying
         } else {
             document.getElementById('order-details').innerHTML = '<p>No order data found.</p>';
         }
