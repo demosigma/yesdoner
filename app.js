@@ -77,7 +77,7 @@ function toggleDescription(element) {
 
 // Handle main button click event
 // Handle main button click event
-Telegram.WebApp.onEvent("mainButtonClicked", function() {
+document.getElementById('floating-button').addEventListener('click', function() {
     const orderData = JSON.stringify(selectedItems); // Convert selected items to JSON string
     localStorage.setItem('orderData', orderData); // Store data in local storage
     tg.sendData(orderData); // Send selected items
