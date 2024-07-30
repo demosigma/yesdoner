@@ -1,39 +1,4 @@
 
-Хрустящая картофельная соломка,  идеально подходит в качестве гарнира к многим блюдам
-Классический бургер с котлетой из говядины, подается на булочке с разнообразными начинками
-Хрустящий салат Ромэн с пармезаном, гренками и кремовым соусом. Отличный выбор для легкого обеда
-Нежная курица, приготовленная в томатном соусе со сливочным маслом, сливками и специями. Подается с рисом или лепешкой
-Традиционное узбекское блюдо из риса, мяса, моркови и специй.  Сытное и ароматное блюдо
-Освежающий напиток из охлажденного кофе,  идеален в жаркую погоду
-Бодрящий коктейль из мяты, лайма, сахара и содовой
-Горячий расслабляющий чай с молоком, подается с тары, наватом и сахаром
-Шоколадный молочный коктейль:  Густой, сладкий и кремовый напиток с шоколадным вкусом
-Свежий напиток из лимонов, воды и сахара.  Идеально подходит для утоления жажды
-Популярный тайваньский напиток с жевательными шариками тапиоки.  Разнообразие вкусов, от традиционного до фруктовых вариантов
-Натуральный десерт из молока, сливок и ароматизаторов.  Доступен в широком ассортименте вкусов
-Кремовая сырная начинка на песочной основе.  Подается с ягодами
-Жареное тесто круглой формы с глазурью, начинками или посыпками.  Сладкий десерт
-Хорошо пропитанный ароматный торт с несколькими коржами и творожным кремом.  Подается с шоколадной глазурью
-
-Доннер:  
-* Картофель фри: 
-* Гамбургер:  
-* Салат Цезарь:  
-* Курица в сливочном соусе:  
-* Плов:  
-* Холодный кофе:  
-* Мохито:  
-* Чай:  
-* Шоколадный молочный коктейль:  
-* Лимонад:  
-* Чай с тапиокой:  
-* Мороженое:  
-* Чизкейк:  
-* Пончик:  
-* Шоколадный торт:  
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,6 +9,129 @@
 	<script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
+	<style>body {
+    font-family: 'Humanist', sans-serif;
+	margin: 0;
+	padding: 0;
+	font-size: 18px;
+	color: var(--tg-theme-text-color);
+	background: var(--tg-theme-bg-color);
+	touch-action: manipulation; /* Prevents double-tap zoom */
+        -webkit-touch-callout: none; /* Disables callout on iOS */
+        -webkit-user-select: none; /* Prevents text selection */
+	user-select: none;
+}
+.item-price{
+	font-weight: bold;
+}
+h2 {
+    text-align: center; /* Center the headings */
+    font-weight:bold; /* Make the font bold */
+    
+	margin-top: 110px;
+    
+}
+.container {
+	max-width: 420px;
+}
+
+.inner { 
+    padding-bottom: 60px;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: 200px 200px 200px;
+    gap: 80px;
+	row-gap: 200px;
+}
+
+.img {
+	width: 160px;
+}
+
+.item {
+	text-align: center;
+}
+
+.btn {
+	
+	display: inline-block;
+	padding: 10px 50px;  
+	border: none;
+	background: rgb(255, 139, 7);
+	border-radius: 10px;
+	color: #fff;
+	text-transform: uppercase;
+	font-weight: bold;
+
+
+	transition: background .2s linear;
+}
+
+.image-container {
+    position: relative;
+}
+
+.item-count {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgb(255, 139, 7);
+    color: white;
+    font-weight: 500;
+    border-radius: 50%;
+    padding: 5px 10px;
+}
+
+.button-container {  
+    display: flex;  
+    justify-content: space-between;  
+    width: 100%;  
+    margin-top: 10px;  
+}
+
+
+.plus-btn {
+	padding: 10px;
+    background: rgb(39, 230, 39);  
+    flex-grow: 1;  
+    margin-left: 14px;
+    margin-right: 20px; /* tiny space between buttons */
+}
+
+.minus-btn {
+	padding: 10px;
+    background: rgb(233, 40, 40);  
+    flex-grow: 1;  
+    margin-left: 20px;
+}
+
+         .item {
+            position: relative; /* Для позиционирования описания */
+            text-align: center;
+        }
+
+        .description {
+            color: #000000; /* Цвет текста для описания */
+            cursor: pointer; /* Изменение курсора на указатель для кликабельного текста */
+            text-decoration: underline; /* Подчёркивание для обозначения кликабельности */
+        }
+        .full-description {
+            display: none; /* Скрываем полное описание по умолчанию */
+            position: absolute; /* Позиционирование поверх изображения */
+            bottom: 0px; /* Отступ от низа */
+            left: 50%; /* Центрирование по горизонтали */
+            transform: translateX(-50%); /* Центрирование по горизонтали */
+            background-color: rgba(255, 255, 255, 0.733); /* Полупрозрачный фон */
+            padding: 10px; /* Отступ внутри описания */
+            border-radius: 5px; /* Закругление углов */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Тень для описания */
+            z-index: 1; /* Поверх других элементов */
+        }
+
+.usercard {
+	text-align: center;
+}</style>
+	
    <div class="container">
       <h2>Ыстық тағамдар</h2>
       <div class="inner" id="food-menu">
