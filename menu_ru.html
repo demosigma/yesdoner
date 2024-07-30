@@ -1,16 +1,307 @@
-Доннер:  Тонкие ломтики мяса, жаренные на вертеле, завернутые в лаваш с овощами и соусами. Сытный и вкусный вариант уличной еды.
-* Картофель фри: Хрустящая картофельная соломка,  идеально подходит в качестве гарнира к многим блюдам.
-* Гамбургер:  Классический бургер с котлетой из говядины, подается на булочке с разнообразными начинками.
-* Салат Цезарь:  Хрустящий салат Ромэн с пармезаном, гренками и кремовым соусом. Отличный выбор для легкого обеда.
-* Курица в сливочном соусе:  Нежная курица, приготовленная в томатном соусе со сливочным маслом, сливками и специями. Подается с рисом или лепешкой.
-* Плов:  Традиционное узбекское блюдо из риса, мяса, моркови и специй.  Сытное и ароматное блюдо.
-* Холодный кофе:  Освежающий напиток из охлажденного кофе,  идеален в жаркую погоду.
-* Мохито:  Классический коктейль из рома, мяты, лайма, сахара и содовой.  Свежий и бодрящий напиток.
-* Чай:  Разнообразные виды чая, от черного и зеленого до травяных.  Успокаивающий и вкусный напиток.
-* Шоколадный молочный коктейль:  Густой, сладкий и кремовый напиток с шоколадным вкусом.
-* Лимонад:  Свежий напиток из лимонов, воды и сахара.  Идеально подходит для утоления жажды.
-* Чай с тапиокой:  Популярный тайваньский напиток с жевательными шариками тапиоки.  Разнообразие вкусов, от традиционного до фруктовых вариантов.
-* Мороженое:  Классический десерт из молока, сливок и ароматизаторов.  Доступен в широком ассортименте вкусов.
-* Чизкейк:  Кремовая сырная начинка на песочной основе.  Подается с фруктами или взбитыми сливками.
-* Пончик:  Жареное тесто с глазурью, начинками или посыпками.  Сладкий десерт.
-* Шоколадный торт:  Богатый и влажный торт из шоколада, яиц, сливочного масла и муки.  Подается с шоколадной глазурью или ганашем.
+
+Хрустящая картофельная соломка,  идеально подходит в качестве гарнира к многим блюдам
+Классический бургер с котлетой из говядины, подается на булочке с разнообразными начинками
+Хрустящий салат Ромэн с пармезаном, гренками и кремовым соусом. Отличный выбор для легкого обеда
+Нежная курица, приготовленная в томатном соусе со сливочным маслом, сливками и специями. Подается с рисом или лепешкой
+Традиционное узбекское блюдо из риса, мяса, моркови и специй.  Сытное и ароматное блюдо
+Освежающий напиток из охлажденного кофе,  идеален в жаркую погоду
+Бодрящий коктейль из мяты, лайма, сахара и содовой
+Горячий расслабляющий чай с молоком, подается с тары, наватом и сахаром
+Шоколадный молочный коктейль:  Густой, сладкий и кремовый напиток с шоколадным вкусом
+Свежий напиток из лимонов, воды и сахара.  Идеально подходит для утоления жажды
+Популярный тайваньский напиток с жевательными шариками тапиоки.  Разнообразие вкусов, от традиционного до фруктовых вариантов
+Натуральный десерт из молока, сливок и ароматизаторов.  Доступен в широком ассортименте вкусов
+Кремовая сырная начинка на песочной основе.  Подается с ягодами
+Жареное тесто круглой формы с глазурью, начинками или посыпками.  Сладкий десерт
+Хорошо пропитанный ароматный торт с несколькими коржами и творожным кремом.  Подается с шоколадной глазурью
+
+Доннер:  
+* Картофель фри: 
+* Гамбургер:  
+* Салат Цезарь:  
+* Курица в сливочном соусе:  
+* Плов:  
+* Холодный кофе:  
+* Мохито:  
+* Чай:  
+* Шоколадный молочный коктейль:  
+* Лимонад:  
+* Чай с тапиокой:  
+* Мороженое:  
+* Чизкейк:  
+* Пончик:  
+* Шоколадный торт:  
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="style.css">
+	<title>Tasty Delivery</title>
+	<script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+   <div class="container">
+      <h2>Ыстық тағамдар</h2>
+      <div class="inner" id="food-menu">
+         <div class="item">
+            <div class="image-container">
+               <img src="1.png" alt="Донер" class="img">  
+               <span class="item-count" style="display: none;">0</span>
+            </div>
+            <p class="item-price">1500₸</p>
+            <p class="item-name">Донер</p>
+            <p class="description" onclick="toggleDescription(this)">Тонкие л...</p>
+            <p class="full-description" onclick="hideDescription(this)" style="display:none;">Хрустящая картофельная соломка,  идеально подходит в качестве гарнира к многим блюдам</p>
+            <div class="button-container" style="display: none;">
+               <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+               <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+            </div>
+            <button class="btn add-btn" id="btn1" onclick="addItem(this)">Қосу</button>  
+         </div>
+         <div class="item">
+            <div class="image-container">
+               <img src="2.png" alt="Картошка фри" class="img">  
+               <span class="item-count" style="display: none;">0</span>
+            </div>
+            <p class="item-price">1500₸</p>
+            <p class="item-name">Картошка фри</p>
+            <p class="description" onclick="toggleDescription(this)">Хрустящая...</p>
+            <p class="full-description" onclick="hideDescription(this)" style="display:none;">Хрустящая картофельная соломка,  идеально подходит в качестве гарнира к многим блюдам</p>
+            <div class="button-container" style="display: none;">
+               <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+               <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+            </div>
+            <button class="btn" id="btn2" onclick="addItem(this)">Қосу</button>
+         </div>
+         <div class="item">
+            <div class="image-container">
+               <img src="4.png" alt="Бургер" class="img">  
+               <span class="item-count" style="display: none;">0</span>
+            </div>
+            <p class="item-price">1500₸</p>
+            <p class="item-name">Бургер</p>
+            <p class="description" onclick="toggleDescription(this)">Классич...</p>
+            <p class="full-description" onclick="hideDescription(this)" style="display:none;">Классический бургер с котлетой из говядины, подается на булочке с разнообразными начинками</p>
+            <div class="button-container" style="display: none;">
+               <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+               <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+            </div>
+            <button class="btn" id="btn3" onclick="addItem(this)">Қосу</button>
+         </div>
+         <div class="item">
+            <div class="image-container">
+               <img src="10.png" alt="Салад цезарь" class="img">  
+               <span class="item-count" style="display: none;">0</span>
+            </div>
+            <p class="item-price">1500₸</p>
+            <p class="item-name">Салад цезарь</p>
+            <p class="description" onclick="toggleDescription(this)">Хрустящий...</p>
+            <p class="full-description" onclick="hideDescription(this)" style="display:none;"Хрустящий салат с пармезаном, гренками и кремовым соусом. Отличный выбор для легкого обеда</p>
+            <div class="button-container" style="display: none;">
+               <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+               <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+            </div>
+            <button class="btn" id="btn4" onclick="addItem(this)">Қосу</button>
+         </div>
+         <div class="item">
+            <div class="image-container">
+               <img src="9.png" alt="Карри" class="img">  
+               <span class="item-count" style="display: none;">0</span>
+            </div>
+            <p class="item-price">1500₸</p>
+            <p class="item-name">Карри</p>
+            <p class="description" onclick="toggleDescription(this)">Нежная к...</p>
+            <p class="full-description" onclick="hideDescription(this)" style="display:none;">Нежная курица, приготовленная в томатном соусе со сливочным маслом, сливками и специями. Подается с рисом или лепешкой</p>
+            <div class="button-container" style="display: none;">
+               <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+               <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+            </div>
+            <button class="btn" id="btn5" onclick="addItem(this)">Қосу</button>
+         </div>
+         <div class="item">
+            <div class="image-container">
+               <img src="6.png" alt="Плов" class="img">  
+               <span class="item-count" style="display: none;">0</span>
+            </div>
+            <p class="item-price">1500₸</p>
+            <p class="item-name">Плов</p>
+            <p class="description" onclick="toggleDescription(this)">Традиц...</p>
+            <p class="full-description" onclick="hideDescription(this)" style="display:none;">Традиционное узбекское блюдо из риса, мяса, моркови и специй.  Сытное и ароматное блюдо</p>
+            <div class="button-container" style="display: none;">
+               <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+               <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+            </div>
+            <button class="btn" id="btn6" onclick="addItem(this)">Қосу</button>
+         </div>
+      </div>
+      <h2>Сусындар</h2>
+      <div class="inner" id="drinks-menu">
+         <div class="item">
+            <div class="image-container">
+               <img src="3.png" alt="Айс кофе" class="img">  
+               <span class="item-count" style="display: none;">0</span>
+            </div>
+            <p class="item-price">1500₸</p>
+            <p class="item-name">Айс кофе</p>
+            <p class="description" onclick="toggleDescription(this)">Освежа...</p>
+            <p class="full-description" onclick="hideDescription(this)" style="display:none;">Освежающий напиток из охлажденного кофе,  идеален в жаркую погоду</p>
+            <div class="button-container" style="display: none;">
+               <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+               <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+            </div>
+            <button class="btn" id="btn7" onclick="addItem(this)">Қосу</button>
+         </div>
+         <div class="item">
+            <div class="image-container">
+               <img src="5.png" alt="Мохито" class="img">  
+               <span class="item-count" style="display: none;">0</span>
+            </div>
+            <p class="item-price">1500₸</p>
+            <p class="item-name">Мохито</p>
+            <p class="description" onclick="toggleDescription(this)">Бодрящий...</p>
+            <p class="full-description" onclick="hideDescription(this)" style="display:none;">Бодрящий коктейль из мяты, лайма, сахара и содовой</p>
+            <div class="button-container" style="display: none;">
+               <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+               <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+            </div>
+            <button class="btn" id="btn8" onclick="addItem(this)">Қосу</button>
+         </div>
+         <div class="item">
+            <div class="image-container">
+               <img src="11.png" alt="Чай" class="img">  
+               <span class="item-count" style="display: none;">0</span>
+            </div>
+            <p class="item-price">1500₸</p>
+            <p class="item-name">Чай</p>
+            <p class="description" onclick="toggleDescription(this)">Горячий...</p>
+            <p class="full-description" onclick="hideDescription(this)" style="display:none;">Горячий расслабляющий чай с молоком, подается с тары, наватом и медом</p>
+            <div class="button-container" style="display: none;">
+               <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+               <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+            </div>
+            <button class="btn" id="btn9" onclick="addItem(this)">Қосу</button>
+         </div>
+         <div class="item">
+            <div class="image-container">
+               <img src="12.png" alt="Шоко милкшейк" class="img">  
+               <span class="item-count" style="display: none;">0</span>
+            </div>
+            <p class="item-price">1500₸</p>
+            <p class="item-name">Шоко милкшейк</p>
+            <p class="description" onclick="toggleDescription(this)">Густой...</p>
+            <p class="full-description" onclick="hideDescription(this)" style="display:none;">Шоколадный молочный коктейль:  Густой, сладкий и кремовый напиток с шоколадным вкусом</p>
+            <div class="button-container" style="display: none;">
+               <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+               <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+            </div>
+            <button class="btn" id="btn10" onclick="addItem(this)">Қосу</button>
+         </div>
+         <div class="item">
+            <div class="image-container">
+               <img src="14.png" alt="Лимонад" class="img">  
+               <span class="item-count" style="display: none;">0</span>
+            </div>
+            <p class="item-price">1500₸</p>
+            <p class="item-name">Лимонад</p>
+            <p class="description" onclick="toggleDescription(this)">Свежий н...</p>
+            <p class="full-description" onclick="hideDescription(this)" style="display:none;">Свежий напиток из лимонов, воды и сахара.  Идеально подходит для утоления жажды</p>
+            <div class="button-container" style="display: none;">
+               <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+               <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+            </div>
+            <button class="btn" id="btn11" onclick="addItem(this)">Қосу</button>
+         </div>
+         <div class="item">
+            <div class="image-container">
+               <img src="15.png" alt="Боба чай" class="img">  
+               <span class="item-count" style="display: none;">0</span>
+            </div>
+            <p class="item-price">1500₸</p>
+            <p class="item-name">Боба чай</p>
+            <p class="description" onclick="toggleDescription(this)">Популя...</p>
+            <p class="full-description" onclick="hideDescription(this)" style="display:none;">Популярный тайваньский напиток с жевательными шариками тапиоки.  Разнообразие вкусов, от традиционного до фруктовых вариантов</p>
+            <div class="button-container" style="display: none;">
+               <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+               <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+            </div>
+            <button class="btn" id="btn12" onclick="addItem(this)">Қосу</button>
+         </div>
+      </div>
+      <h2>Десерттер</h2>
+      <div class="inner" id="desserts-menu">
+         <div class="item">
+            <div class="image-container">
+               <img src="7.png" alt="Мороженое" class="img">  
+               <span class="item-count" style="display: none;">0</span>
+            </div>
+            <p class="item-price">1500₸</p>
+            <p class="item-name">Мороженое</p>
+            <p class="description" onclick="toggleDescription(this)">Натур...</p>
+            <p class="full-description" onclick="hideDescription(this)" style="display:none;">Натуральный десерт из молока, сливок и ароматизаторов.  Доступен в широком ассортименте вкусов</p>
+            <div class="button-container" style="display: none;">
+               <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+               <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+            </div>
+            <button class="btn" id="btn13" onclick="addItem(this)">Қосу</button>
+         </div>
+         <div class="item">
+            <div class="image-container">
+               <img src="8.png" alt="Чизкейк" class="img">  
+               <span class="item-count" style="display: none;">0</span>
+            </div>
+            <p class="item-price">1500₸</p>
+            <p class="item-name">Чизкейк</p>
+            <p class="description" onclick="toggleDescription(this)">Кремо...</p>
+            <p class="full-description" onclick="hideDescription(this)" style="display:none;">Кремовая сырная начинка на песочной основе.  Подается с ягодами</p>
+            <div class="button-container" style="display: none;">
+               <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+               <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+            </div>
+            <button class="btn" id="btn14" onclick="addItem(this)">Қосу</button>
+         </div>
+         <div class="item">
+            <div class="image-container">
+               <img src="13.png" alt="Пончик" class="img">  
+               <span class="item-count" style="display: none;">0</span>
+            </div>
+            <p class="item-price">1500₸</p>
+            <p class="item-name">Пончик</p>
+            <p class="description" onclick="toggleDescription(this)">Жаре...</p>
+            <p class="full-description" onclick="hideDescription(this)" style="display:none;">Жареное тесто круглой формы с глазурью, начинками или посыпками.  Сладкий десерт</p>
+            <div class="button-container" style="display: none;">
+               <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+               <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+            </div>
+            <button class="btn" id="btn15" onclick="addItem(this)">Қосу</button>
+         </div>
+         <div class="item">
+            <div class="image-container">
+               <img src="16.png" alt="Шоколадный торт" class="img">  
+               <span class="item-count" style="display: none;">0</span>
+            </div>
+            
+            <p class="item-price">1500₸</p>
+            <p class="item-name">Шоколадный торт</p>
+            <p class="description" onclick="toggleDescription(this)">Хорош...</p>
+            <p class="full-description" onclick="hideDescription(this)" style="display:none;"Хорошо пропитанный ароматный торт с несколькими коржами и творожным кремом.  Подается с шоколадной глазурью</p>
+            <div class="button-container" style="display: none;">
+               <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+               <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+            </div>
+            <button class="btn" id="btn16" onclick="addItem(this)">Қосу</button>
+         </div>
+      </div>
+   </div>
+   </div>
+   
+   <div class="usercard" id="usercard"></div>
+   
+   <script src="app.js"></script>
+
+</body>
+   
+</html>
