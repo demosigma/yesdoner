@@ -9,225 +9,7 @@
 	<script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
-	<style>
-body {
-    font-family: 'Humanist', sans-serif;
-	margin: 0;
-	padding: 0;
-	font-size: 18px;
-	color: var(--tg-theme-text-color);
-	background: var(--tg-theme-bg-color);
-	touch-action: manipulation; /* Prevents double-tap zoom */
-        -webkit-touch-callout: none; /* Disables callout on iOS */
-        -webkit-user-select: none; /* Prevents text selection */
-	user-select: none;
-}
-.item-price{
-	font-weight: bold;
-}
-h2 {
-    text-align: center; /* Center the headings */
-    font-weight:bold; /* Make the font bold */
-    
-	margin-top: 110px;
-    
-}
-.container {
-	max-width: 420px;
-}
-
-.inner { 
-    padding-bottom: 60px;
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	grid-template-rows: 200px 200px 200px;
-    gap: 80px;
-	row-gap: 200px;
-}
-
-.img {
-	width: 160px;
-}
-
-.item {
-	text-align: center;
-}
-
-.btn {
 	
-	display: inline-block;
-	padding: 10px 30px;  
-	border: none;
-	background: rgb(255, 139, 7);
-	border-radius: 10px;
-	color: #fff;
-	text-transform: uppercase;
-	font-weight: bold;
-
-
-	transition: background .2s linear;
-}
-
-.image-container {
-    position: relative;
-}
-
-.item-count {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: rgb(255, 139, 7);
-    color: white;
-    font-weight: 500;
-    border-radius: 50%;
-    padding: 5px 10px;
-}
-
-.button-container {  
-    display: flex;  
-    justify-content: space-between;  
-    width: 100%;  
-    margin-top: 10px;  
-}
-
-
-.plus-btn {
-	padding: 10px;
-    background: rgb(39, 230, 39);  
-    flex-grow: 1;  
-    margin-left: 14px;
-    margin-right: 20px; /* tiny space between buttons */
-}
-
-.minus-btn {
-	padding: 10px;
-    background: rgb(233, 40, 40);  
-    flex-grow: 1;  
-    margin-left: 20px;
-}
-
-         .item {
-            position: relative; /* Для позиционирования описания */
-            text-align: center;
-        }
-
-        .description {
-            color: #000000; /* Цвет текста для описания */
-            cursor: pointer; /* Изменение курсора на указатель для кликабельного текста */
-            text-decoration: underline; /* Подчёркивание для обозначения кликабельности */
-        }
-        .full-description {
-            display: none; /* Скрываем полное описание по умолчанию */
-            position: absolute; /* Позиционирование поверх изображения */
-            bottom: 0px; /* Отступ от низа */
-            left: 50%; /* Центрирование по горизонтали */
-            transform: translateX(-50%); /* Центрирование по горизонтали */
-            background-color: rgba(255, 255, 255, 0.733); /* Полупрозрачный фон */
-            padding: 10px; /* Отступ внутри описания */
-            border-radius: 5px; /* Закругление углов */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Тень для описания */
-            z-index: 1; /* Поверх других элементов */
-        }
-
-.usercard {
-	text-align: center;
-}
-	</style>
-	
-	
-	<script>
-let tg = window.Telegram.WebApp;
-
-tg.expand();
-
-tg.MainButton.textColor = '#FFFFFF';
-tg.MainButton.color = '#2cab37';
-tg.MainButton.text = "Мой заказ"; // "My Order"
-let selectedItems = []; // Array to hold selected items
-
-// Make sure the main button is visible
-tg.MainButton.isVisible = true;
-tg.BackButton.isVisible = false;
-function addItem(button) {
-    const itemElement = button.closest('.item');
-    const itemName = itemElement.querySelector('.item-name').textContent; // Get item name
-    let itemCountElement = itemElement.querySelector('.item-count');
-    let count = parseInt(itemCountElement.textContent) || 0;
-    count++;
-    itemCountElement.textContent = count;
-
-    updateUI(itemElement, count);
-    updateSelectedItems(itemName, count); // Update the selected items array
-}
-
-function updateCount(button, change) {
-    const itemElement = button.closest('.item');
-    let itemCountElement = itemElement.querySelector('.item-count');
-    let count = parseInt(itemCountElement.textContent) || 0;
-    count += change;
-
-    if (count < 0) count = 0;
-    itemCountElement.textContent = count;
-
-    updateUI(itemElement, count);
-    const itemName = itemElement.querySelector('.item-name').textContent;
-    updateSelectedItems(itemName, count); // Update the selected items array
-}
-
-function updateSelectedItems(itemName, count) {
-    const existingItem = selectedItems.find(item => item.name === itemName);
-    if (existingItem) {
-        existingItem.count = count; // Update existing item's count
-    } else {
-        selectedItems.push({ name: itemName, count }); // Add new item if it doesn't exist
-    }
-}
-
-function updateUI(itemElement, count) {
-    const itemCountDisplay = itemElement.querySelector('.item-count');
-    const buttonContainer = itemElement.querySelector('.button-container');
-    const addButton = itemElement.querySelector('.btn:not(.minus-btn):not(.plus-btn)'); // Select the add button
-
-    if (count > 0) {
-        itemCountDisplay.style.display = 'block';
-        buttonContainer.style.display = 'flex';
-        addButton.style.display = 'none';
-    } else {
-        itemCountDisplay.style.display = 'none';
-        buttonContainer.style.display = 'none';
-        addButton.style.display = 'inline-block';
-    }
-}
-
-function hideDescription(element) {
-    element.style.display = 'none'; // Hide the clicked element
-}
-
-function toggleDescription(element) {
-    const fullDescription = element.nextElementSibling; // Get the next sibling (full description)
-
-    if (fullDescription.style.display === "none" || fullDescription.style.display === "") {
-        fullDescription.style.display = "block"; // Show full description
-    } else {
-        fullDescription.style.display = "none"; // Hide full description
-    }
-}
-
-// Handle main button click event
-// Handle main button click event
-Telegram.WebApp.onEvent("mainButtonClicked", function() {
-    const orderData = JSON.stringify(selectedItems); // Convert selected items to JSON string
-    localStorage.setItem('orderData', orderData); // Store data in local storage
-    localStorage.setItem('menuLanguage', "ru");
-    window.location.href = "order.html"; // Redirect to order summary page
-});
-
-
-// Function to display order summary or other actions can be added here
-
-// Example of how to initialize user card or other elements if needed
-let usercard = document.getElementById("usercard");
-	</script>
 	
   <div class="container">
       <h2>Горячие блюда</h2>
@@ -240,7 +22,7 @@ let usercard = document.getElementById("usercard");
             <p class="item-price">1500₸</p>
             <p class="item-name">Донер</p>
             <p class="description" onclick="toggleDescription(this)">Тонкие л...</p>
-            <p class="full-description" onclick="hideDescription(this)" style="display:none;">Хрустящая картофельная соломка,  идеально подходит в качестве гарнира к многим блюдам</p>
+            <p class="full-description" onclick="hideDescription(this)" style="display:none;">Тонкие ломтики мяса, жаренные на вертеле, завернутые в лаваш с овощами и соусами</p>
             <div class="button-container" style="display: none;">
                <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
                <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
@@ -255,7 +37,7 @@ let usercard = document.getElementById("usercard");
             <p class="item-price">1500₸</p>
             <p class="item-name">Картошка фри</p>
             <p class="description" onclick="toggleDescription(this)">Хрустящая...</p>
-            <p class="full-description" onclick="hideDescription(this)" style="display:none;">Тонкие ломтики мяса, жаренные на вертеле, завернутые в лаваш с овощами и соусами</p>
+            <p class="full-description" onclick="hideDescription(this)" style="display:none;">Хрустящая картофельная соломка,  отлично подходит в качестве гарнира к многим блюдам</p>
             <div class="button-container" style="display: none;">
                <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
                <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
@@ -486,7 +268,224 @@ let usercard = document.getElementById("usercard");
    <div class="usercard" id="usercard"></div>
    
    <script src="app.js"></script>
+	<style>
+body {
+    font-family: 'Humanist', sans-serif;
+	margin: 0;
+	padding: 0;
+	font-size: 18px;
+	color: var(--tg-theme-text-color);
+	background: var(--tg-theme-bg-color);
+	touch-action: manipulation; /* Prevents double-tap zoom */
+        -webkit-touch-callout: none; /* Disables callout on iOS */
+        -webkit-user-select: none; /* Prevents text selection */
+	user-select: none;
+}
+.item-price{
+	font-weight: bold;
+}
+h2 {
+    text-align: center; /* Center the headings */
+    font-weight:bold; /* Make the font bold */
+    
+	margin-top: 110px;
+    
+}
+.container {
+	max-width: 420px;
+}
 
+.inner { 
+    padding-bottom: 60px;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: 200px 200px 200px;
+    gap: 80px;
+	row-gap: 200px;
+}
+
+.img {
+	width: 160px;
+}
+
+.item {
+	text-align: center;
+}
+
+.btn {
+	
+	display: inline-block;
+	padding: 10px 30px;  
+	border: none;
+	background: rgb(255, 139, 7);
+	border-radius: 10px;
+	color: #fff;
+	text-transform: uppercase;
+	font-weight: bold;
+
+
+	transition: background .2s linear;
+}
+
+.image-container {
+    position: relative;
+}
+
+.item-count {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgb(255, 139, 7);
+    color: white;
+    font-weight: 500;
+    border-radius: 50%;
+    padding: 5px 10px;
+}
+
+.button-container {  
+    display: flex;  
+    justify-content: space-between;  
+    width: 100%;  
+    margin-top: 10px;  
+}
+
+
+.plus-btn {
+	padding: 10px;
+    background: rgb(39, 230, 39);  
+    flex-grow: 1;  
+    margin-left: 14px;
+    margin-right: 20px; /* tiny space between buttons */
+}
+
+.minus-btn {
+	padding: 10px;
+    background: rgb(233, 40, 40);  
+    flex-grow: 1;  
+    margin-left: 20px;
+}
+
+         .item {
+            position: relative; /* Для позиционирования описания */
+            text-align: center;
+        }
+
+        .description {
+            color: #000000; /* Цвет текста для описания */
+            cursor: pointer; /* Изменение курсора на указатель для кликабельного текста */
+            text-decoration: underline; /* Подчёркивание для обозначения кликабельности */
+        }
+        .full-description {
+            display: none; /* Скрываем полное описание по умолчанию */
+            position: absolute; /* Позиционирование поверх изображения */
+            bottom: 0px; /* Отступ от низа */
+            left: 50%; /* Центрирование по горизонтали */
+            transform: translateX(-50%); /* Центрирование по горизонтали */
+            background-color: rgba(255, 255, 255, 0.733); /* Полупрозрачный фон */
+            padding: 10px; /* Отступ внутри описания */
+            border-radius: 5px; /* Закругление углов */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Тень для описания */
+            z-index: 1; /* Поверх других элементов */
+        }
+
+.usercard {
+	text-align: center;
+}
+	</style>
+	
+	
+	<script>
+let tg = window.Telegram.WebApp;
+
+tg.expand();
+
+tg.MainButton.textColor = '#FFFFFF';
+tg.MainButton.color = '#2cab37';
+tg.MainButton.text = "Мой заказ"; // "My Order"
+let selectedItems = []; // Array to hold selected items
+
+// Make sure the main button is visible
+tg.MainButton.isVisible = true;
+tg.BackButton.isVisible = false;
+function addItem(button) {
+    const itemElement = button.closest('.item');
+    const itemName = itemElement.querySelector('.item-name').textContent; // Get item name
+    let itemCountElement = itemElement.querySelector('.item-count');
+    let count = parseInt(itemCountElement.textContent) || 0;
+    count++;
+    itemCountElement.textContent = count;
+
+    updateUI(itemElement, count);
+    updateSelectedItems(itemName, count); // Update the selected items array
+}
+
+function updateCount(button, change) {
+    const itemElement = button.closest('.item');
+    let itemCountElement = itemElement.querySelector('.item-count');
+    let count = parseInt(itemCountElement.textContent) || 0;
+    count += change;
+
+    if (count < 0) count = 0;
+    itemCountElement.textContent = count;
+
+    updateUI(itemElement, count);
+    const itemName = itemElement.querySelector('.item-name').textContent;
+    updateSelectedItems(itemName, count); // Update the selected items array
+}
+
+function updateSelectedItems(itemName, count) {
+    const existingItem = selectedItems.find(item => item.name === itemName);
+    if (existingItem) {
+        existingItem.count = count; // Update existing item's count
+    } else {
+        selectedItems.push({ name: itemName, count }); // Add new item if it doesn't exist
+    }
+}
+
+function updateUI(itemElement, count) {
+    const itemCountDisplay = itemElement.querySelector('.item-count');
+    const buttonContainer = itemElement.querySelector('.button-container');
+    const addButton = itemElement.querySelector('.btn:not(.minus-btn):not(.plus-btn)'); // Select the add button
+
+    if (count > 0) {
+        itemCountDisplay.style.display = 'block';
+        buttonContainer.style.display = 'flex';
+        addButton.style.display = 'none';
+    } else {
+        itemCountDisplay.style.display = 'none';
+        buttonContainer.style.display = 'none';
+        addButton.style.display = 'inline-block';
+    }
+}
+
+function hideDescription(element) {
+    element.style.display = 'none'; // Hide the clicked element
+}
+
+function toggleDescription(element) {
+    const fullDescription = element.nextElementSibling; // Get the next sibling (full description)
+
+    if (fullDescription.style.display === "none" || fullDescription.style.display === "") {
+        fullDescription.style.display = "block"; // Show full description
+    } else {
+        fullDescription.style.display = "none"; // Hide full description
+    }
+}
+
+// Handle main button click event
+// Handle main button click event
+Telegram.WebApp.onEvent("mainButtonClicked", function() {
+    const orderData = JSON.stringify(selectedItems); // Convert selected items to JSON string
+    localStorage.setItem('orderData', orderData); // Store data in local storage
+    localStorage.setItem('menuLanguage', "ru");
+    window.location.href = "order.html"; // Redirect to order summary page
+});
+
+
+// Function to display order summary or other actions can be added here
+
+// Example of how to initialize user card or other elements if needed
+let usercard = document.getElementById("usercard");
+	</script>
 </body>
-   
 </html>
