@@ -12,11 +12,17 @@
     </style>
 <body>
 
-    <h1>Тапсырысыңыз</h1>
+    <h1 id="orderHeading"></h1>
     <div id="order-details"></div>
     
 
     <script>
+        let menuLanguage = localStorage.getItem('menuLanguage');
+    if (menuLanguage === 'ru') {
+      document.getElementById('orderHeading').textContent = "Ваш заказ";
+    } else {
+      document.getElementById('orderHeading').textContent = "Тапсырысыңыз";
+    }
         let tg = window.Telegram.WebApp;
         tg.MainButton.isVisible = true;
         tg.BackButton.isVisible = true;
@@ -51,11 +57,20 @@
             document.getElementById('order-details').innerHTML = '<p>No order data found.</p>';
         }
 
+        const lang = localStorage.getItem('menuLanguage');
         // Handle back button click
+        if (lang == "ru") {
         Telegram.WebApp.onEvent("backButtonClicked", function() {
 
-    window.location.href = "index.html"; // Redirect to order summary page
+    window.location.href = "menu_ru.html";
 });
+        }
+        else {
+                    Telegram.WebApp.onEvent("backButtonClicked", function() {
+
+    window.location.href = "index.html";
+});
+        }
 
         // Clear local storage on page load
         window.onload = function() {
