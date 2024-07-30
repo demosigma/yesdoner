@@ -131,14 +131,17 @@ h2 {
 
 .usercard {
 	text-align: center;
-}</style>
+}
+	</style>
+	
+	
 	<script>let tg = window.Telegram.WebApp;
 
 tg.expand();
 
 tg.MainButton.textColor = '#FFFFFF';
 tg.MainButton.color = '#2cab37';
-tg.MainButton.text = "Менің тапсырысым"; // "My Order"
+tg.MainButton.text = "Мой заказ"; // "My Order"
 let selectedItems = []; // Array to hold selected items
 
 // Make sure the main button is visible
@@ -226,7 +229,7 @@ let usercard = document.getElementById("usercard");
 	</script>
 	
   <div class="container">
-      <h2>Ыстық тағамдар</h2>
+      <h2>Горячие блюда</h2>
       <div class="inner" id="food-menu">
          <div class="item">
             <div class="image-container">
@@ -319,7 +322,7 @@ let usercard = document.getElementById("usercard");
             <button class="btn" id="btn6" onclick="addItem(this)">Добавить</button>
          </div>
       </div>
-      <h2>Сусындар</h2>
+      <h2>Напитки</h2>
       <div class="inner" id="drinks-menu">
          <div class="item">
             <div class="image-container">
@@ -412,7 +415,7 @@ let usercard = document.getElementById("usercard");
             <button class="btn" id="btn12" onclick="addItem(this)">Добавить</button>
          </div>
       </div>
-      <h2>Десерттер</h2>
+      <h2>Десерты</h2>
       <div class="inner" id="desserts-menu">
          <div class="item">
             <div class="image-container">
