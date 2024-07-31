@@ -34,8 +34,9 @@ function updateCount(button, change) {
     itemCountElement.textContent = count;
 
     updateUI(itemElement, count);
+    let itemPrice = count * parseInt(itemElement.querySelector('.item-price').textContent.replace("₸", ""));
     const itemName = itemElement.querySelector('.item-name').textContent;
-    updateSelectedItems(itemName, count); // Update the selected items array
+    updateSelectedItems(itemName, count, itemPrice); // Update the selected items array
 }
 
 function updateSelectedItems(itemName, count, itemPrice) {
