@@ -15,13 +15,14 @@ function addItem(button) {
     const itemName = itemElement.querySelector('.item-name').textContent; 
     const oneitemPrice = parseInt(itemElement.querySelector('.item-price').textContent.replace('₸', ''))
     let itemCountElement = itemElement.querySelector('.item-count');
-    let count = parseInt(itemCountElement.textContent) || 0;
+    let count = parseInt(itemCountElement.textContent) || 0; // Get current count
     count++;
     itemCountElement.textContent = count;
-    const itemPrice = oneitemPrice * count;
+    const itemPrice = oneitemPrice * count; // Calculate price based on current count
     updateUI(itemElement, count);
     updateSelectedItems(itemName, count, itemPrice); // Pass itemPrice
 }
+
 
 function updateCount(button, change) {
     const itemElement = button.closest('.item');
