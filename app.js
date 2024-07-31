@@ -37,21 +37,12 @@ function updateCount(button, change) {
 }
 
 function updateSelectedItems(itemName, count) {
-  const existingItem = selectedItems.find(item => item.name === itemName);
-
-  // Get the item price from the HTML
-  const itemPriceElement = document.querySelector(`.item-name:contains(${itemName})`).nextElementSibling; 
-  const itemPrice = parseInt(itemPriceElement.textContent.replace('₸', '')); // Extract price
-
-  if (existingItem) {
-    existingItem.count = count; // Update existing item's count
-    existingItem.price = itemPrice; // Update existing item's price
-  } else {
-    selectedItems.push({ name: itemName, count, price: itemPrice }); // Add new item if it doesn't exist
-  }
-
-  // Update local storage with the updated selectedItems array
-  localStorage.setItem('orderData', JSON.stringify(selectedItems));
+    const existingItem = selectedItems.find(item => item.name === itemName);
+    if (existingItem) {
+        existingItem.count = count; // Update existing item's count
+    } else {
+        selectedItems.push({ name: itemName, count }); // Add new item if it doesn't exist
+    }
 }
 
 function updateUI(itemElement, count) {
