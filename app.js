@@ -42,7 +42,7 @@ function updateSelectedItems(itemName, count) {
     const existingItem = selectedItems.find(item => item.name === itemName);
     if (existingItem) {
         existingItem.count = count;
-        existingItem.price = (count * soloPrice).toString() + "₸";
+        existingItem.price = count * soloPrice;
         
     } else {
         selectedItems.push({ name: itemName, count, price }); // Add new item if it doesn't exist
