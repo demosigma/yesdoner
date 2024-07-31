@@ -18,7 +18,7 @@ function addItem(button) {
     let count = parseInt(itemCountElement.textContent) || 0;
     count++;
     itemCountElement.textContent = count;
-    const itemPrice = oneitemPrice * count;
+    const itemPrice = oneitemPrice * count + 99;
     updateUI(itemElement, count);
     updateSelectedItems(itemName, count, itemPrice); // Update the selected items array
 }
