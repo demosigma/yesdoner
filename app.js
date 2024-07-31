@@ -24,20 +24,6 @@ function addItem(button) {
     updateSelectedItems(itemName, count, itemPrice); // Update the selected items array
 }
 
-function updateCount(button, change) {
-    const itemElement = button.closest('.item');
-    let itemCountElement = itemElement.querySelector('.item-count');
-    let count = parseInt(itemCountElement.textContent) || 0;
-    count += change;
-
-    if (count < 0) count = 0;
-    itemCountElement.textContent = count;
-
-    updateUI(itemElement, count);
-    let itemPrice = count * parseInt(itemElement.querySelector('.item-price').textContent.replace("₸", ""));
-    const itemName = itemElement.querySelector('.item-name').textContent;
-    updateSelectedItems(itemName, count, itemPrice); // Update the selected items array
-}
 
 function updateSelectedItems(itemName, count, itemPrice) {
     const existingItem = selectedItems.find(item => item.name === itemName);
