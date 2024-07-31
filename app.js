@@ -33,15 +33,19 @@ function updateCount(button, change) {
 
     updateUI(itemElement, count);
     const itemName = itemElement.querySelector('.item-name').textContent;
-    updateSelectedItems(itemName, count); // Update the selected items array
+    const soloPrice = parseInt(itemElement.querySelector('.item-price').textContent);
+    
+    updateSelectedItems(itemName, count, soloPrice); // Update the selected items array
 }
 
 function updateSelectedItems(itemName, count) {
     const existingItem = selectedItems.find(item => item.name === itemName);
     if (existingItem) {
-        existingItem.count = count; // Update existing item's count
+        existingItem.count = count;
+        existingItem.price = (count * soloPrice).toString() + "₸";
+        
     } else {
-        selectedItems.push({ name: itemName, count }); // Add new item if it doesn't exist
+        selectedItems.push({ name: itemName, count, price }); // Add new item if it doesn't exist
     }
 }
 
