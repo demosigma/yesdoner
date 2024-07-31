@@ -13,16 +13,17 @@ tg.BackButton.isVisible = false;
 function addItem(button) {
     const itemElement = button.closest('.item');
     const itemName = itemElement.querySelector('.item-name').textContent; 
-    const oneitemPrice = parseInt(itemElement.querySelector('.item-price').textContent.replace('₸', ''))
+    const oneitemPriceElement = itemElement.querySelector('.item-price'); 
+    const oneitemPrice = parseFloat(oneitemPriceElement.textContent.replace('₸', '')); 
+
     let itemCountElement = itemElement.querySelector('.item-count');
-    let count = parseInt(itemCountElement.textContent) || 0; // Get current count
+    let count = parseInt(itemCountElement.textContent) || 0; 
     count++;
     itemCountElement.textContent = count;
-    const itemPrice = oneitemPrice * count; // Calculate price based on current count
+    const itemPrice = oneitemPrice * count; 
     updateUI(itemElement, count);
-    updateSelectedItems(itemName, count, itemPrice); // Pass itemPrice
+    updateSelectedItems(itemName, count, itemPrice); 
 }
-
 
 function updateCount(button, change) {
     const itemElement = button.closest('.item');
