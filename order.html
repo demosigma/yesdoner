@@ -6,18 +6,17 @@
     <title>Тапсырысыңыз</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
+    <style>
+        body {
+    font-family: 'Humanist', sans-serif;}
+    </style>
 <body>
 
-    <h1 id="orderHeading"></h1>
+    <h1>Тапсырысыңыз</h1>
     <div id="order-details"></div>
+    
 
     <script>
-        let menuLanguage = localStorage.getItem('menuLanguage');
-    if (menuLanguage === 'ru') {
-      document.getElementById('orderHeading').textContent = "Ваш заказ";
-    } else {
-      document.getElementById('orderHeading').textContent = "Тапсырысыңыз";
-    }
         let tg = window.Telegram.WebApp;
         tg.MainButton.isVisible = true;
         tg.BackButton.isVisible = true;
@@ -37,7 +36,7 @@
             let htmlContent = '<ul>';
             items.forEach(item => {
                 if (item.count > 0) {
-                    htmlContent += `<li>${item.count} x ${item.name}: ${item.price}₸</li>`; // Added ₸ symbol for price
+                    htmlContent += `<li>${item.name}: ${item.count}</li>`;
                 }
             });
             htmlContent += '</ul>';
@@ -52,25 +51,15 @@
             document.getElementById('order-details').innerHTML = '<p>No order data found.</p>';
         }
 
-        const lang = localStorage.getItem('menuLanguage');
         // Handle back button click
-        if (lang == "ru") {
         Telegram.WebApp.onEvent("backButtonClicked", function() {
 
-    window.location.href = "menu_ru.html";
+    window.location.href = "index.html"; // Redirect to order summary page
 });
-        }
-        else {
-                    Telegram.WebApp.onEvent("backButtonClicked", function() {
-
-    window.location.href = "index.html";
-});
-        }
 
         // Clear local storage on page load
         window.onload = function() {
             localStorage.removeItem('orderData');
-            localStorage.removeItem('menuLanguage')
         };
     </script>
 </body>
