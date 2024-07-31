@@ -12,17 +12,14 @@ tg.MainButton.isVisible = true;
 tg.BackButton.isVisible = false;
 function addItem(button) {
     const itemElement = button.closest('.item');
-    const itemName = itemElement.querySelector('.item-name').textContent; 
-    const oneitemPriceElement = itemElement.querySelector('.item-price'); 
-    const oneitemPrice = parseFloat(oneitemPriceElement.textContent.replace('₸', '')); 
-
+    const itemName = itemElement.querySelector('.item-name').textContent; // Get item name
     let itemCountElement = itemElement.querySelector('.item-count');
-    let count = parseInt(itemCountElement.textContent) || 0; 
+    let count = parseInt(itemCountElement.textContent) || 0;
     count++;
     itemCountElement.textContent = count;
-    const itemPrice = oneitemPrice * count; 
+
     updateUI(itemElement, count);
-    updateSelectedItems(itemName, count, itemPrice); // Pass the calculated price
+    updateSelectedItems(itemName, count); // Update the selected items array
 }
 
 function updateCount(button, change) {
@@ -36,17 +33,15 @@ function updateCount(button, change) {
 
     updateUI(itemElement, count);
     const itemName = itemElement.querySelector('.item-name').textContent;
-    const price = count * soloPrice; // Calculate price
-    updateSelectedItems(itemName, count, price); // Pass the calculated price
+    updateSelectedItems(itemName, count); // Update the selected items array
 }
 
-function updateSelectedItems(itemName, count, price) { 
+function updateSelectedItems(itemName, count) {
     const existingItem = selectedItems.find(item => item.name === itemName);
     if (existingItem) {
-        existingItem.count = count;
-        existingItem.price = price; // Update the price directly
+        existingItem.count = count; // Update existing item's count
     } else {
-        selectedItems.push({ name: itemName, count, price }); // Add new item if it doesn't exist
+        selectedItems.push({ name: itemName, count }); // Add new item if it doesn't exist
     }
 }
 
