@@ -45,7 +45,7 @@ function updateSelectedItems(itemName, count, itemPrice) {
         existingItem.count = count;
         existingItem.price = itemPrice;
     } else {
-        selectedItems.push({ name: itemName, count, price: itemPrice }); 
+        selectedItems.push({ name: itemName, count, price: 999}); 
     }
 }
 
