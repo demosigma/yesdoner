@@ -42,7 +42,7 @@
             let htmlContent = '<ul>';
             items.forEach(item => {
                 if (item.count > 0) {
-                    htmlContent += `<li>${item.count} x ${item.count}: ${item.price}</li>`;
+                    htmlContent += `<li>${item.count} x ${item.name}: ${item.price}</li>`;
                 }
             });
             htmlContent += '</ul>';
