@@ -29,9 +29,9 @@ function updateSelectedItems(itemName, count, itemPrice) {
     const existingItem = selectedItems.find(item => item.name === itemName);
     if (existingItem) {
         existingItem.count = count; // Update existing item's count
-        existingItem.price = itemPrice
+        existingItem.price = itemPrice; // Update existing item's price
     } else {
-        selectedItems.push({ name: itemName, count, price }); // Add new item if it doesn't exist
+        selectedItems.push({ name: itemName, count, price: itemPrice }); // Use itemPrice for the new item
     }
 }
 
