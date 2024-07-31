@@ -13,13 +13,14 @@ tg.BackButton.isVisible = false;
 function addItem(button) {
     const itemElement = button.closest('.item');
     const itemName = itemElement.querySelector('.item-name').textContent; // Get item name
+    const oneitemPrice = parseInt(itemElement.querySelector('.item-price').textContent.replace('₸', ''))
     let itemCountElement = itemElement.querySelector('.item-count');
     let count = parseInt(itemCountElement.textContent) || 0;
     count++;
     itemCountElement.textContent = count;
-
+    const itemPrice = oneitemPrice * count;
     updateUI(itemElement, count);
-    updateSelectedItems(itemName, count); // Update the selected items array
+    updateSelectedItems(itemName, count, itemPrice); // Update the selected items array
 }
 
 function updateCount(button, change) {
@@ -41,7 +42,7 @@ function updateSelectedItems(itemName, count) {
     if (existingItem) {
         existingItem.count = count; // Update existing item's count
     } else {
-        selectedItems.push({ name: itemName, count }); // Add new item if it doesn't exist
+        selectedItems.push({ name: itemName, count, price }); // Add new item if it doesn't exist
     }
 }
 
