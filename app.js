@@ -38,7 +38,7 @@ function updateCount(button, change) {
     updateSelectedItems(itemName, count, soloPrice); // Update the selected items array
 }
 
-function updateSelectedItems(itemName, count) {
+function updateSelectedItems(itemName, count, soloPrice) {
     const existingItem = selectedItems.find(item => item.name === itemName);
     if (existingItem) {
         existingItem.count = count;
