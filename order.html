@@ -31,33 +31,31 @@
 
         // Function to display order details
         function displayOrderDetails(orderData) {
-  const orderDetailsDiv = document.getElementById('order-details');
-  const items = JSON.parse(orderData); // Parse the JSON string
+            const orderDetailsDiv = document.getElementById('order-details');
+            const items = JSON.parse(orderData); // Parse the JSON string
 
-  if (!items || items.length === 0) {
-    orderDetailsDiv.innerHTML = '<p>No items in your order.</p>';
-    return;
-  }
+            if (!items || items.length === 0) {
+                orderDetailsDiv.innerHTML = '<p>No items in your order.</p>';
+                return;
+            }
 
-  let htmlContent = '<ul>';
-  items.forEach(item => {
-    if (item.count > 0) {
-      // Calculate item total price
-      const itemTotal = item.count * item.price; 
-      htmlContent += `<li>${item.count} x ${item.name}: ${itemTotal}₸</li>`;
-    }
-  });
-  htmlContent += '</ul>';
-  orderDetailsDiv.innerHTML = htmlContent;
-}
+            let htmlContent = '<ul>';
+            items.forEach(item => {
+                if (item.count > 0) {
+                    htmlContent += `<li>${item.name}: ${item.count}</li>`;
+                }
+            });
+            htmlContent += '</ul>';
+            orderDetailsDiv.innerHTML = htmlContent;
+        }
 
-// Display the order details if available
-if (localStorage.getItem('orderData')) {
-  displayOrderDetails(localStorage.getItem('orderData'));
-   localStorage.removeItem('orderData'); // Uncomment if you want to clear the data after displaying
-} else {
-  document.getElementById('order-details').innerHTML = '<p>No order data found.</p>';
-}
+        // Display the order details if available
+        if (orderData) {
+            displayOrderDetails(orderData);
+            localStorage.removeItem('orderData'); // Clear the data after displaying
+        } else {
+            document.getElementById('order-details').innerHTML = '<p>No order data found.</p>';
+        }
 
         const lang = localStorage.getItem('menuLanguage');
         // Handle back button click
