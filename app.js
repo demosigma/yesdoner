@@ -12,14 +12,16 @@ tg.MainButton.isVisible = true;
 tg.BackButton.isVisible = false;
 function addItem(button) {
     const itemElement = button.closest('.item');
-    const itemName = itemElement.querySelector('.item-name').textContent; // Get item name
+    const itemName = itemElement.querySelector('.item-name').textContent; 
+    
     let itemCountElement = itemElement.querySelector('.item-count');
     let count = parseInt(itemCountElement.textContent) || 0;
     count++;
+    
     itemCountElement.textContent = count;
-
+    let itemPrice = count * parseFloat(itemElement.querySelector('.item-price').textContent.replace("₸", "")); // Get item price as a number
     updateUI(itemElement, count);
-    updateSelectedItems(itemName, count); // Update the selected items array
+    updateSelectedItems(itemName, count, itemPrice); 
 }
 
 function updateCount(button, change) {
@@ -32,34 +34,22 @@ function updateCount(button, change) {
     itemCountElement.textContent = count;
 
     updateUI(itemElement, count);
+    let itemPrice = count * parseFloat(itemElement.querySelector('.item-price').textContent.replace("₸", ""));
     const itemName = itemElement.querySelector('.item-name').textContent;
-    updateSelectedItems(itemName, count); // Update the selected items array
+    updateSelectedItems(itemName, count, itemPrice); 
 }
 
-function updateSelectedItems(itemName, count) {
+function updateSelectedItems(itemName, count, itemPrice) {
     const existingItem = selectedItems.find(item => item.name === itemName);
     if (existingItem) {
-        existingItem.count = count; // Update existing item's count
+        existingItem.count = count;
+        existingItem.price = itemPrice;
     } else {
-        selectedItems.push({ name: itemName, count }); // Add new item if it doesn't exist
+        selectedItems.push({ name: itemName, count, price: itemPrice }); 
     }
 }
 
-function updateUI(itemElement, count) {
-    const itemCountDisplay = itemElement.querySelector('.item-count');
-    const buttonContainer = itemElement.querySelector('.button-container');
-    const addButton = itemElement.querySelector('.btn:not(.minus-btn):not(.plus-btn)'); // Select the add button
 
-    if (count > 0) {
-        itemCountDisplay.style.display = 'block';
-        buttonContainer.style.display = 'flex';
-        addButton.style.display = 'none';
-    } else {
-        itemCountDisplay.style.display = 'none';
-        buttonContainer.style.display = 'none';
-        addButton.style.display = 'inline-block';
-    }
-}
 
 function hideDescription(element) {
     element.style.display = 'none'; // Hide the clicked element
