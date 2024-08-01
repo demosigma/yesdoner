@@ -48,6 +48,7 @@
                 orderDetailsDiv.innerHTML = '<p>${korzina}</p>';
                 return;
             }
+            else{
 
             let htmlContent = '<ul>';
             let totalPrice = 0;
@@ -71,6 +72,7 @@
 
             htmlContent += `<h2>${totalPriceLabel}: ${totalPrice.toFixed(2)}₸</h2>`;
             orderDetailsDiv.innerHTML = htmlContent;
+        }
         }
 
         // Display the order details if available
