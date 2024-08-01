@@ -78,14 +78,14 @@
             displayOrderDetails(orderData);
             // No need to remove the orderData here as it's handled in window.onload
         } else {
-            let korzina = '';
+            let korz = '';
             if (menuLanguage === 'ru') {
-                korzina = 'Ваша корзина пуста.';
+                korz = 'Ваша корзина пуста.';
             } 
             else {
-                korzina = 'Ештеңе таңдаған жоқсыз.';
+                korz = 'Ештеңе таңдаған жоқсыз.';
             }
-            document.getElementById('order-details').innerHTML = '<p>${korzina}</p>';
+            document.getElementById('order-details').innerHTML = '<p>${korz}</p>';
         }
 
         
