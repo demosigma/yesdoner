@@ -18,80 +18,67 @@
 
     <script>
         const menuLanguage = localStorage.getItem('menuLanguage');
-        if (menuLanguage === 'ru') {
-            document.getElementById('orderHeading').textContent = "Ваш заказ";
-        } else {
-            document.getElementById('orderHeading').textContent = "Тапсырысыңыз";
+const orderDetailsDiv = document.getElementById('order-details');
+const tg = window.Telegram.WebApp;
+
+// Function to display order details
+function displayOrderDetails(orderData) {
+    // Set the visibility of Telegram buttons
+    tg.MainButton.isVisible = true;
+    tg.BackButton.isVisible = true;
+
+    // Check if orderData exists and is not empty
+    if (!orderData) {
+        displayEmptyOrderMessage();
+        return;
+    }
+
+    // Parse the JSON string
+    const items = JSON.parse(orderData);
+
+    // Check if items are available
+    if (!items || items.length === 0) {
+        displayEmptyOrderMessage();
+        return;
+    }
+
+    // Build the HTML content for the order
+    let htmlContent = '<ul>';
+    let totalPrice = 0;
+
+    items.forEach(item => {
+        if (item.count > 0) {
+            const itemTotalPrice = (item.totalPrice || 0).toFixed(2); // Get total price and format
+            htmlContent += `<li>${item.count} x ${item.name}: ${itemTotalPrice}₸</li>`;
+            totalPrice += item.totalPrice || 0; // Calculate total price
         }
+    });
 
-        let tg = window.Telegram.WebApp;
-        tg.MainButton.isVisible = true;
-        tg.BackButton.isVisible = true;
+    // Determine the total price label
+    let totalPriceLabel = menuLanguage === 'ru' ? 'Всего' : 'Барлығы';
 
-        // Retrieve order data from local storage
-        const orderData = localStorage.getItem('orderData');
-        
-        // Function to display order details
-        function displayOrderDetails(orderData) {
-            const orderDetailsDiv = document.getElementById('order-details');
-            const items = JSON.parse(orderData); // Parse the JSON string
-            
-            
-            if (!items || items.length === 0) {
-                let korzina = '';
-            if (menuLanguage === 'ru') {
-                korzina = 'Ваша корзина пуста.';
-            } 
-            else {
-                korzina = 'Ештеңе таңдаған жоқсыз.';
-            }
-            
-            
-                orderDetailsDiv.innerHTML = `<p>${korzina}</p>`;
-                return;
-            }
+    // Append total price or empty message if total price is zero
+    if (totalPrice.toFixed(2) !== '0.00') {
+        htmlContent += `<h2>${totalPriceLabel}: ${totalPrice.toFixed(2)}₸</h2>`;
+    } else {
+        displayEmptyOrderMessage();
+        return;
+    }
 
-            else{
-            let htmlContent = '<ul>';
-            let totalPrice = 0;
+    // Display the order details
+    orderDetailsDiv.innerHTML = htmlContent;
+}
 
-            items.forEach(item => {
-                if (item.count > 0) {
-                    const itemTotalPrice = (item.totalPrice || 0).toFixed(2); // Get total price and format
-                    htmlContent += `<li>${item.count} x ${item.name}: ${itemTotalPrice}₸</li>`;
-                    totalPrice += item.totalPrice || 0; // Calculate total price
-                }
-            });
+// Function to display the empty order message
+function displayEmptyOrderMessage() {
+    let korzina = menuLanguage === 'ru' ? 'Ваша корзина пуста.' : 'Ештеңе таңдаған жоқсыз.';
+    orderDetailsDiv.innerHTML = `<p>${korzina}</p>`;
+}
 
-            let totalPriceLabel = 'Барлығы';
-            
-            if (menuLanguage === 'ru') {
-                totalPriceLabel = 'Всего';
-            } 
-            else {
-                totalPriceLabel = 'Барлығы';
-            }
-                if(totalPrice.toFixed(2) !==0.00){
-            htmlContent += `<h2>${totalPriceLabel}: ${totalPrice.toFixed(2)}₸</h2>`;
-            orderDetailsDiv.innerHTML = htmlContent;
-                }
-                else{ 
-                      let korzinaa = '';
-            if (menuLanguage === 'ru') {
-                korzinaa = 'Ваша корзина пуста.';
-            } 
-            else {
-                korzinaa = 'Ештеңе таңдаған жоқсыз.';
-            }
-            
-                      htmlContent += `<h2>${korzinaa}</h2>`;
-            orderDetailsDiv.innerHTML = htmlContent;
-            
-           
-                }
-        
-        }
-        }
+// Retrieve order data from local storage and display details
+const orderData = localStorage.getItem('orderData');
+displayOrderDetails(orderData);
+
 
         // Display the order details if available
         if (orderData) {
