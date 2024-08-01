@@ -5,27 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Тапсырысыңыз</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-</head>
     <style>
         body {
-    font-family: 'Humanist', sans-serif;}
+            font-family: 'Humanist', sans-serif;
+        }
     </style>
+</head>
 <body>
 
     <h1 id="orderHeading"></h1>
     <div id="order-details"></div>
-    
 
     <script>
         let menuLanguage = localStorage.getItem('menuLanguage');
-    if (menuLanguage === 'ru') {
-      document.getElementById('orderHeading').textContent = "Ваш заказ";
-    } else {
-      document.getElementById('orderHeading').textContent = "Тапсырысыңыз";
-    }
+        if (menuLanguage === 'ru') {
+            document.getElementById('orderHeading').textContent = "Ваш заказ";
+        } else {
+            document.getElementById('orderHeading').textContent = "Тапсырысыңыз";
+        }
+
         let tg = window.Telegram.WebApp;
         tg.MainButton.isVisible = true;
         tg.BackButton.isVisible = true;
+
         // Retrieve order data from local storage
         const orderData = localStorage.getItem('orderData');
 
@@ -40,19 +42,25 @@
             }
 
             let htmlContent = '<ul>';
+            let totalPrice = 0;
+
             items.forEach(item => {
                 if (item.count > 0) {
-                    htmlContent += `<li>${item.name}: ${item.count}</li>`;
+                    const itemTotalPrice = (item.totalPrice || 0).toFixed(2); // Get total price and format
+                    htmlContent += `<li>${item.count} x ${item.name}: ${itemTotalPrice} ₸</li>`;
+                    totalPrice += item.totalPrice || 0; // Calculate total price
                 }
             });
+
             htmlContent += '</ul>';
+            htmlContent += `<h2>Total Price: ${totalPrice.toFixed(2)} ₸</h2>`;
             orderDetailsDiv.innerHTML = htmlContent;
         }
 
         // Display the order details if available
         if (orderData) {
             displayOrderDetails(orderData);
-            localStorage.removeItem('orderData'); // Clear the data after displaying
+            // No need to remove the orderData here as it's handled in window.onload
         } else {
             document.getElementById('order-details').innerHTML = '<p>No order data found.</p>';
         }
@@ -60,22 +68,19 @@
         const lang = localStorage.getItem('menuLanguage');
         // Handle back button click
         if (lang == "ru") {
-        Telegram.WebApp.onEvent("backButtonClicked", function() {
-
-    window.location.href = "menu_ru.html";
-});
-        }
-        else {
-                    Telegram.WebApp.onEvent("backButtonClicked", function() {
-
-    window.location.href = "index.html";
-});
+            Telegram.WebApp.onEvent("backButtonClicked", function() {
+                window.location.href = "menu_ru.html";
+            });
+        } else {
+            Telegram.WebApp.onEvent("backButtonClicked", function() {
+                window.location.href = "index.html";
+            });
         }
 
         // Clear local storage on page load
         window.onload = function() {
             localStorage.removeItem('orderData');
-            localStorage.removeItem('menuLanguage')
+            localStorage.removeItem('menuLanguage');
         };
     </script>
 </body>
