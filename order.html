@@ -30,7 +30,7 @@
 
         // Retrieve order data from local storage
         const orderData = localStorage.getItem('orderData');
-
+        const lang = localStorage.getItem('menuLanguage');
         // Function to display order details
         function displayOrderDetails(orderData) {
             const orderDetailsDiv = document.getElementById('order-details');
@@ -53,9 +53,10 @@
             });
 
             let totalPriceLabel = 'Total Price';
-            if (menuLanguage === 'ru') {
+            
+            if (lang === 'ru') {
                 totalPriceLabel = 'Всего';
-            } else if (menuLanguage === 'kz') {
+            } else if (lang === 'kz') {
                 totalPriceLabel = 'Барлығы';
             }
 
@@ -71,7 +72,7 @@
             document.getElementById('order-details').innerHTML = '<p>No order data found.</p>';
         }
 
-        const lang = localStorage.getItem('menuLanguage');
+        
         // Handle back button click
         if (lang == "ru") {
             Telegram.WebApp.onEvent("backButtonClicked", function() {
