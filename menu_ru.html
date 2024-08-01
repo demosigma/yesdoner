@@ -143,26 +143,45 @@ tg.expand();
 tg.MainButton.textColor = '#FFFFFF';
 tg.MainButton.color = '#2cab37';
 tg.MainButton.text = "Мой заказ"; // "My Order"
-let selectedItems = []; // Array to hold selected items
+const selectedItems = []; // Array to hold selected items
 
 // Make sure the main button is visible
 tg.MainButton.isVisible = true;
 tg.BackButton.isVisible = false;
 function addItem(button) {
     const itemElement = button.closest('.item');
-    const itemName = itemElement.querySelector('.item-name').textContent; // Get item name
+    if (!itemElement) return; // Exit if itemElement is not found
+
+    const itemName = itemElement.querySelector('.item-name')?.textContent;
+    if (!itemName) return; // Exit if itemName is not found
+
+    const itemPrice = parseFloat(itemElement.querySelector('.item-price')?.textContent.replace('₸', '').trim()) || 0; // Get item price and clean up
+    if (!itemPrice) return; // Exit if itemPrice is not found
+
     let itemCountElement = itemElement.querySelector('.item-count');
+    if (!itemCountElement) return; // Exit if itemCountElement is not found
+
     let count = parseInt(itemCountElement.textContent) || 0;
     count++;
     itemCountElement.textContent = count;
 
     updateUI(itemElement, count);
-    updateSelectedItems(itemName, count); // Update the selected items array
+    updateSelectedItems(itemName, count, itemPrice); // Update the selected items array with price
 }
 
 function updateCount(button, change) {
     const itemElement = button.closest('.item');
+    if (!itemElement) return; // Exit if itemElement is not found
+
+    const itemName = itemElement.querySelector('.item-name')?.textContent;
+    if (!itemName) return; // Exit if itemName is not found
+
+    const itemPrice = parseFloat(itemElement.querySelector('.item-price')?.textContent.replace('₸', '').trim()) || 0; // Get item price
+    if (!itemPrice) return; // Exit if itemPrice is not found
+
     let itemCountElement = itemElement.querySelector('.item-count');
+    if (!itemCountElement) return; // Exit if itemCountElement is not found
+
     let count = parseInt(itemCountElement.textContent) || 0;
     count += change;
 
@@ -170,16 +189,16 @@ function updateCount(button, change) {
     itemCountElement.textContent = count;
 
     updateUI(itemElement, count);
-    const itemName = itemElement.querySelector('.item-name').textContent;
-    updateSelectedItems(itemName, count); // Update the selected items array
+    updateSelectedItems(itemName, count, itemPrice); // Update the selected items array with price
 }
 
-function updateSelectedItems(itemName, count) {
+function updateSelectedItems(itemName, count, price) {
     const existingItem = selectedItems.find(item => item.name === itemName);
     if (existingItem) {
         existingItem.count = count; // Update existing item's count
+        existingItem.totalPrice = count * price; // Update total price
     } else {
-        selectedItems.push({ name: itemName, count }); // Add new item if it doesn't exist
+        selectedItems.push({ name: itemName, count, totalPrice: count * price }); // Add new item with total price
     }
 }
 
