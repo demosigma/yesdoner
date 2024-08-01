@@ -47,7 +47,7 @@
             items.forEach(item => {
                 if (item.count > 0) {
                     const itemTotalPrice = (item.totalPrice || 0).toFixed(2); // Get total price and format
-                    htmlContent += `<li>${item.count} x ${item.name}: ${itemTotalPrice} ₸</li>`;
+                    htmlContent += `<li>${item.count} x ${item.name}: ${itemTotalPrice}₸</li>`;
                     totalPrice += item.totalPrice || 0; // Calculate total price
                 }
             });
@@ -59,7 +59,7 @@
                 totalPriceLabel = 'Барлығы';
             }
 
-            htmlContent += `<h2>${totalPriceLabel}: ${totalPrice.toFixed(2)} ₸</h2>`;
+            htmlContent += `<h2>${totalPriceLabel}: ${totalPrice.toFixed(2)}₸</h2>`;
             orderDetailsDiv.innerHTML = htmlContent;
         }
 
