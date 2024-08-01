@@ -17,7 +17,7 @@
     <div id="order-details"></div>
 
     <script>
-        let menuLanguage = localStorage.getItem('menuLanguage');
+        const menuLanguage = localStorage.getItem('menuLanguage');
         if (menuLanguage === 'ru') {
             document.getElementById('orderHeading').textContent = "Ваш заказ";
         } else {
@@ -30,14 +30,22 @@
 
         // Retrieve order data from local storage
         const orderData = localStorage.getItem('orderData');
-        const lang = localStorage.getItem('menuLanguage');
+        
         // Function to display order details
         function displayOrderDetails(orderData) {
             const orderDetailsDiv = document.getElementById('order-details');
             const items = JSON.parse(orderData); // Parse the JSON string
 
             if (!items || items.length === 0) {
-                orderDetailsDiv.innerHTML = '<p>No items in your order.</p>';
+            let korzina = '';
+            
+            if (menuLanguage === 'ru') {
+                korzina = 'Ваша корзина пуста.';
+            } 
+            else {
+                korzina = 'Ештеңе таңдаған жоқсыз.';
+            }
+                orderDetailsDiv.innerHTML = '<p>${korzina}</p>';
                 return;
             }
 
@@ -52,11 +60,12 @@
                 }
             });
 
-            let totalPriceLabel = 'Total Price';
+            let totalPriceLabel = 'Барлығы';
             
-            if (lang === 'ru') {
+            if (menuLanguage === 'ru') {
                 totalPriceLabel = 'Всего';
-            } else if (lang === 'kz') {
+            } 
+            else {
                 totalPriceLabel = 'Барлығы';
             }
 
@@ -69,12 +78,19 @@
             displayOrderDetails(orderData);
             // No need to remove the orderData here as it's handled in window.onload
         } else {
-            document.getElementById('order-details').innerHTML = '<p>No order data found.</p>';
+            let korzina = '';
+            if (menuLanguage === 'ru') {
+                korzina = 'Ваша корзина пуста.';
+            } 
+            else {
+                korzina = 'Ештеңе таңдаған жоқсыз.';
+            }
+            document.getElementById('order-details').innerHTML = '<p>${korzina}</p>';
         }
 
         
         // Handle back button click
-        if (lang == "ru") {
+        if (menuLanguage == "ru") {
             Telegram.WebApp.onEvent("backButtonClicked", function() {
                 window.location.href = "menu_ru.html";
             });
