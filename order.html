@@ -36,36 +36,22 @@
             font-style: italic;
             margin-top: 50px;
         }
-        .confirm-btn {
-            display: block;
-            width: 200px;
-            margin: 30px auto;
-            padding: 15px;
-            background: #2cab37;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .confirm-btn:disabled {
-            background: #cccccc;
-            cursor: not-allowed;
-        }
     </style>
 </head>
 <body>
 
     <h1 id="orderHeading">Your Order</h1>
     <div id="order-details"></div>
-    <button id="confirm-order" class="confirm-btn">Continue to Payment</button>
 
     <script>
         const menuLanguage = localStorage.getItem('menuLanguage');
         const orderDetailsDiv = document.getElementById('order-details');
-        const confirmBtn = document.getElementById('confirm-order');
         const tg = window.Telegram.WebApp;
+
+        tg.MainButton.setText("CONTINUE TO PAYMENT");
+        tg.MainButton.color = "#2cab37";
+        tg.MainButton.textColor = "#ffffff";
+        tg.MainButton.isVisible = false;
 
         function displayOrderDetails(orderData) {
             tg.MainButton.isVisible = true;
@@ -100,7 +86,7 @@
 
             if (totalPrice.toFixed(2) !== '0.00' && hasItems) {
                 htmlContent += `<div class="total-price">${totalPriceLabel}: ${totalPrice.toFixed(2)}₸</div>`;
-                confirmBtn.disabled = false;
+                tg.MainButton.isVisible = true;
             } else {
                 displayEmptyOrderMessage();
                 return;
@@ -112,7 +98,7 @@
         function displayEmptyOrderMessage() {
             let emptyMessage = menuLanguage === 'en' ? 'Your cart is empty.' : 'Ештеңе таңдаған жоқсыз.';
             orderDetailsDiv.innerHTML = `<div class="empty-cart"><p>${emptyMessage}</p></div>`;
-            confirmBtn.style.display = 'none';
+            tg.MainButton.isVisible = false;
         }
 
         const orderData = localStorage.getItem('orderData');
@@ -128,13 +114,11 @@
             });
         }
 
-        confirmBtn.addEventListener('click', function() {
+        Telegram.WebApp.onEvent("mainButtonClicked", function() {
             const orderData = localStorage.getItem('orderData');
             if (orderData) {
                 tg.sendData(orderData);
                 tg.close();
-            } else {
-                alert('No order data found.');
             }
         });
     </script>
