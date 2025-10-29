@@ -36,16 +36,35 @@
             font-style: italic;
             margin-top: 50px;
         }
+        .confirm-btn {
+            display: block;
+            width: 200px;
+            margin: 30px auto;
+            padding: 15px;
+            background: #2cab37;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .confirm-btn:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
 
     <h1 id="orderHeading">Your Order</h1>
     <div id="order-details"></div>
+    <button id="confirm-order" class="confirm-btn">Continue to Payment</button>
 
     <script>
         const menuLanguage = localStorage.getItem('menuLanguage');
         const orderDetailsDiv = document.getElementById('order-details');
+        const confirmBtn = document.getElementById('confirm-order');
         const tg = window.Telegram.WebApp;
 
         function displayOrderDetails(orderData) {
@@ -66,21 +85,22 @@
 
             let htmlContent = '<ul>';
             let totalPrice = 0;
+            let hasItems = false;
 
             items.forEach(item => {
                 if (item.count > 0) {
-                    const itemTotalPrice = (item.totalPrice || 0).toFixed(2); 
+                    const itemTotalPrice = (item.totalPrice || 0).toFixed(2);
                     htmlContent += `<li>${item.count} x ${item.name}: ${itemTotalPrice}₸</li>`;
-                    totalPrice += item.totalPrice || 0; 
+                    totalPrice += item.totalPrice || 0;
+                    hasItems = true;
                 }
             });
 
-            // Determine the total price label
             let totalPriceLabel = menuLanguage === 'en' ? 'Total' : 'Барлығы';
 
-
-            if (totalPrice.toFixed(2) !== '0.00') {
+            if (totalPrice.toFixed(2) !== '0.00' && hasItems) {
                 htmlContent += `<div class="total-price">${totalPriceLabel}: ${totalPrice.toFixed(2)}₸</div>`;
+                confirmBtn.disabled = false;
             } else {
                 displayEmptyOrderMessage();
                 return;
@@ -92,24 +112,12 @@
         function displayEmptyOrderMessage() {
             let emptyMessage = menuLanguage === 'en' ? 'Your cart is empty.' : 'Ештеңе таңдаған жоқсыз.';
             orderDetailsDiv.innerHTML = `<div class="empty-cart"><p>${emptyMessage}</p></div>`;
+            confirmBtn.style.display = 'none';
         }
 
-        // Retrieve order data from local storage and display details
         const orderData = localStorage.getItem('orderData');
         displayOrderDetails(orderData);
-        if (orderData) {
-            displayOrderDetails(orderData);
-        } else {
-            let emptyMessage = '';
-            if (menuLanguage === 'en') {
-                emptyMessage = 'Your cart is empty.';
-            } else {
-                emptyMessage = 'Ештеңе таңдаған жоқсыз.';
-            }
-            document.getElementById('order-details').innerHTML = `<div class="empty-cart"><p>${emptyMessage}</p></div>`;
-        }
 
-        // handle back button click
         if (menuLanguage === "en") {
             Telegram.WebApp.onEvent("backButtonClicked", function() {
                 window.location.href = "menu_en.html";
@@ -120,11 +128,15 @@
             });
         }
 
-        // clear local storage on page load
-        window.onload = function() {
-            localStorage.removeItem('orderData');
-            localStorage.removeItem('menuLanguage');
-        };
+        confirmBtn.addEventListener('click', function() {
+            const orderData = localStorage.getItem('orderData');
+            if (orderData) {
+                tg.sendData(orderData);
+                tg.close();
+            } else {
+                alert('No order data found.');
+            }
+        });
     </script>
 </body>
 </html>
