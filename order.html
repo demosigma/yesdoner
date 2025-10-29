@@ -3,103 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Тапсырысыңыз</title>
+    <title>Your Order</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         body {
             font-family: 'Humanist', sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: var(--tg-theme-text-color);
+            background: var(--tg-theme-bg-color);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .total-price {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .empty-cart {
+            text-align: center;
+            font-style: italic;
+            margin-top: 50px;
         }
     </style>
 </head>
 <body>
 
-    <h1 id="orderHeading"></h1>
+    <h1 id="orderHeading">Your Order</h1>
     <div id="order-details"></div>
 
     <script>
         const menuLanguage = localStorage.getItem('menuLanguage');
-const orderDetailsDiv = document.getElementById('order-details');
-const tg = window.Telegram.WebApp;
+        const orderDetailsDiv = document.getElementById('order-details');
+        const tg = window.Telegram.WebApp;
 
-// Function to display order details
-function displayOrderDetails(orderData) {
-    // Set the visibility of Telegram buttons
-    tg.MainButton.isVisible = true;
-    tg.BackButton.isVisible = true;
+        function displayOrderDetails(orderData) {
+            tg.MainButton.isVisible = true;
+            tg.BackButton.isVisible = true;
 
-    // Check if orderData exists and is not empty
-    if (!orderData) {
-        displayEmptyOrderMessage();
-        return;
-    }
+            if (!orderData) {
+                displayEmptyOrderMessage();
+                return;
+            }
 
-    // Parse the JSON string
-    const items = JSON.parse(orderData);
+            const items = JSON.parse(orderData);
 
-    // Check if items are available
-    if (!items || items.length === 0) {
-        displayEmptyOrderMessage();
-        return;
-    }
+            if (!items || items.length === 0) {
+                displayEmptyOrderMessage();
+                return;
+            }
 
-    // Build the HTML content for the order
-    let htmlContent = '<ul>';
-    let totalPrice = 0;
+            let htmlContent = '<ul>';
+            let totalPrice = 0;
 
-    items.forEach(item => {
-        if (item.count > 0) {
-            const itemTotalPrice = (item.totalPrice || 0).toFixed(2); // Get total price and format
-            htmlContent += `<li>${item.count} x ${item.name}: ${itemTotalPrice}₸</li>`;
-            totalPrice += item.totalPrice || 0; // Calculate total price
+            items.forEach(item => {
+                if (item.count > 0) {
+                    const itemTotalPrice = (item.totalPrice || 0).toFixed(2); 
+                    htmlContent += `<li>${item.count} x ${item.name}: ${itemTotalPrice}₸</li>`;
+                    totalPrice += item.totalPrice || 0; 
+                }
+            });
+
+            // Determine the total price label
+            let totalPriceLabel = menuLanguage === 'en' ? 'Total' : 'Барлығы';
+
+
+            if (totalPrice.toFixed(2) !== '0.00') {
+                htmlContent += `<div class="total-price">${totalPriceLabel}: ${totalPrice.toFixed(2)}₸</div>`;
+            } else {
+                displayEmptyOrderMessage();
+                return;
+            }
+
+            orderDetailsDiv.innerHTML = htmlContent;
         }
-    });
 
-    // Determine the total price label
-    let totalPriceLabel = menuLanguage === 'ru' ? 'Всего' : 'Барлығы';
+        function displayEmptyOrderMessage() {
+            let emptyMessage = menuLanguage === 'en' ? 'Your cart is empty.' : 'Ештеңе таңдаған жоқсыз.';
+            orderDetailsDiv.innerHTML = `<div class="empty-cart"><p>${emptyMessage}</p></div>`;
+        }
 
-    // Append total price or empty message if total price is zero
-    if (totalPrice.toFixed(2) !== '0.00') {
-        htmlContent += `<h2>${totalPriceLabel}: ${totalPrice.toFixed(2)}₸</h2>`;
-    } else {
-        displayEmptyOrderMessage();
-        return;
-    }
-
-    // Display the order details
-    orderDetailsDiv.innerHTML = htmlContent;
-}
-
-// Function to display the empty order message
-function displayEmptyOrderMessage() {
-    let korzina = menuLanguage === 'ru' ? 'Ваша корзина пуста.' : 'Ештеңе таңдаған жоқсыз.';
-    orderDetailsDiv.innerHTML = `<p>${korzina}</p>`;
-}
-
-// Retrieve order data from local storage and display details
-const orderData = localStorage.getItem('orderData');
-displayOrderDetails(orderData);
-
-
-        // Display the order details if available
+        // Retrieve order data from local storage and display details
+        const orderData = localStorage.getItem('orderData');
+        displayOrderDetails(orderData);
         if (orderData) {
             displayOrderDetails(orderData);
-            // No need to remove the orderData here as it's handled in window.onload
         } else {
-            let korz = '';
-            if (menuLanguage === 'ru') {
-                korz = 'Ваша корзина пуста.';
-            } 
-            else {
-                korz = 'Ештеңе таңдаған жоқсыз.';
+            let emptyMessage = '';
+            if (menuLanguage === 'en') {
+                emptyMessage = 'Your cart is empty.';
+            } else {
+                emptyMessage = 'Ештеңе таңдаған жоқсыз.';
             }
-            document.getElementById('order-details').innerHTML = `<p>${korz}</p>`;
+            document.getElementById('order-details').innerHTML = `<div class="empty-cart"><p>${emptyMessage}</p></div>`;
         }
 
-        
-        // Handle back button click
-        if (menuLanguage == "ru") {
+        // handle back button click
+        if (menuLanguage === "en") {
             Telegram.WebApp.onEvent("backButtonClicked", function() {
-                window.location.href = "menu_ru.html";
+                window.location.href = "menu_en.html";
             });
         } else {
             Telegram.WebApp.onEvent("backButtonClicked", function() {
@@ -107,7 +120,7 @@ displayOrderDetails(orderData);
             });
         }
 
-        // Clear local storage on page load
+        // clear local storage on page load
         window.onload = function() {
             localStorage.removeItem('orderData');
             localStorage.removeItem('menuLanguage');
