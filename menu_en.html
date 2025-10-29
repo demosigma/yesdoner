@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Tasty Delivery</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <style>
+        body {
+            font-family: 'Humanist', sans-serif;
+            margin: 0;
+            padding: 0;
+            font-size: 18px;
+            color: var(--tg-theme-text-color);
+            background: var(--tg-theme-bg-color);
+            touch-action: manipulation; /* Prevents double-tap zoom */
+            -webkit-touch-callout: none; /* Disables callout on iOS */
+            -webkit-user-select: none; /* Prevents text selection */
+            user-select: none;
+        }
+        .item-price {
+            font-weight: bold;
+        }
+        h2 {
+            text-align: center; /* Center the headings */
+            font-weight: bold; /* Make the font bold */
+            margin-top: 110px;
+        }
+        .container {
+            max-width: 420px;
+        }
+        .inner { 
+            padding-bottom: 60px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 200px 200px 200px;
+            gap: 80px;
+            row-gap: 200px;
+        }
+        .img {
+            width: 160px;
+        }
+        .item {
+            text-align: center;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 30px;  
+            border: none;
+            background: rgb(255, 139, 7);
+            border-radius: 10px;
+            color: #fff;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: background .2s linear;
+        }
+        .image-container {
+            position: relative;
+        }
+        .item-count {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgb(255, 139, 7);
+            color: white;
+            font-weight: 500;
+            border-radius: 50%;
+            padding: 5px 10px;
+        }
+        .button-container {  
+            display: flex;  
+            justify-content: space-between;  
+            width: 100%;  
+            margin-top: 10px;  
+        }
+        .plus-btn {
+            padding: 10px;
+            background: rgb(39, 230, 39);  
+            flex-grow: 1;  
+            margin-left: 14px;
+            margin-right: 20px; /* tiny space between buttons */
+        }
+        .minus-btn {
+            padding: 10px;
+            background: rgb(233, 40, 40);  
+            flex-grow: 1;  
+            margin-left: 20px;
+        }
+        .item {
+            position: relative; /* For description positioning */
+            text-align: center;
+        }
+        .description {
+            color: #000000; /* Text color for description */
+            cursor: pointer; /* Pointer cursor for clickable text */
+            text-decoration: underline; /* Underline to indicate clickability */
+        }
+        .full-description {
+            display: none; /* Hide full description by default */
+            position: absolute; /* Position over image */
+            bottom: 0px; /* Bottom offset */
+            left: 50%; /* Horizontal centering */
+            transform: translateX(-50%); /* Horizontal centering */
+            background-color: rgba(255, 255, 255, 0.733); /* Semi-transparent background */
+            padding: 10px; /* Inner padding */
+            border-radius: 5px; /* Rounded corners */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Shadow for description */
+            z-index: 1; /* Above other elements */
+        }
+        .usercard {
+            text-align: center;
+        }
+    </style>
+    
+    <script>
+        let tg = window.Telegram.WebApp;
+
+        tg.expand();
+
+        tg.MainButton.textColor = '#FFFFFF';
+        tg.MainButton.color = '#2cab37';
+        tg.MainButton.text = "My Order";
+        const selectedItems = []; // Array to hold selected items
+
+        // Make sure the main button is visible
+        tg.MainButton.isVisible = true;
+        tg.BackButton.isVisible = false;
+        
+        function addItem(button) {
+            const itemElement = button.closest('.item');
+            if (!itemElement) return; // Exit if itemElement is not found
+
+            const itemName = itemElement.querySelector('.item-name')?.textContent;
+            if (!itemName) return; // Exit if itemName is not found
+
+            const itemPrice = parseFloat(itemElement.querySelector('.item-price')?.textContent.replace('₸', '').trim()) || 0; // Get item price and clean up
+            if (!itemPrice) return; // Exit if itemPrice is not found
+
+            let itemCountElement = itemElement.querySelector('.item-count');
+            if (!itemCountElement) return; // Exit if itemCountElement is not found
+
+            let count = parseInt(itemCountElement.textContent) || 0;
+            count++;
+            itemCountElement.textContent = count;
+
+            updateUI(itemElement, count);
+            updateSelectedItems(itemName, count, itemPrice); // Update the selected items array with price
+        }
+
+        function updateCount(button, change) {
+            const itemElement = button.closest('.item');
+            if (!itemElement) return; // Exit if itemElement is not found
+
+            const itemName = itemElement.querySelector('.item-name')?.textContent;
+            if (!itemName) return; // Exit if itemName is not found
+
+            const itemPrice = parseFloat(itemElement.querySelector('.item-price')?.textContent.replace('₸', '').trim()) || 0; // Get item price
+            if (!itemPrice) return; // Exit if itemPrice is not found
+
+            let itemCountElement = itemElement.querySelector('.item-count');
+            if (!itemCountElement) return; // Exit if itemCountElement is not found
+
+            let count = parseInt(itemCountElement.textContent) || 0;
+            count += change;
+
+            if (count < 0) count = 0;
+            itemCountElement.textContent = count;
+
+            updateUI(itemElement, count);
+            updateSelectedItems(itemName, count, itemPrice); // Update the selected items array with price
+        }
+
+        function updateSelectedItems(itemName, count, price) {
+            const existingItem = selectedItems.find(item => item.name === itemName);
+            if (existingItem) {
+                existingItem.count = count; // Update existing item's count
+                existingItem.totalPrice = count * price; // Update total price
+            } else {
+                selectedItems.push({ name: itemName, count, totalPrice: count * price }); // Add new item with total price
+            }
+        }
+
+        function updateUI(itemElement, count) {
+            const itemCountDisplay = itemElement.querySelector('.item-count');
+            const buttonContainer = itemElement.querySelector('.button-container');
+            const addButton = itemElement.querySelector('.btn:not(.minus-btn):not(.plus-btn)'); // Select the add button
+
+            if (count > 0) {
+                itemCountDisplay.style.display = 'block';
+                buttonContainer.style.display = 'flex';
+                addButton.style.display = 'none';
+            } else {
+                itemCountDisplay.style.display = 'none';
+                buttonContainer.style.display = 'none';
+                addButton.style.display = 'inline-block';
+            }
+        }
+
+        function hideDescription(element) {
+            element.style.display = 'none'; // Hide the clicked element
+        }
+
+        function toggleDescription(element) {
+            const fullDescription = element.nextElementSibling; // Get the next sibling (full description)
+
+            if (fullDescription.style.display === "none" || fullDescription.style.display === "") {
+                fullDescription.style.display = "block"; // Show full description
+            } else {
+                fullDescription.style.display = "none"; // Hide full description
+            }
+        }
+
+        // Handle main button click event
+        Telegram.WebApp.onEvent("mainButtonClicked", function() {
+            const orderData = JSON.stringify(selectedItems); // Convert selected items to JSON string
+            localStorage.setItem('orderData', orderData); // Store data in local storage
+            localStorage.setItem('menuLanguage', "en"); // Set language to English
+            window.location.href = "order.html"; // Redirect to order summary page
+        });
+
+        // Example of how to initialize user card or other elements if needed
+        let usercard = document.getElementById("usercard");
+    </script>
+    
+    <div class="container">
+        <h2>Hot Dishes</h2>
+        <div class="inner" id="food-menu">
+            <div class="item">
+                <div class="image-container">
+                    <img src="1.png" alt="Doner" class="img">  
+                    <span class="item-count" style="display: none;">0</span>
+                </div>
+                <p class="item-price">1500₸</p>
+                <p class="item-name">Doner</p>
+                <p class="description" onclick="toggleDescription(this)">Thin slices...</p>
+                <p class="full-description" onclick="hideDescription(this)" style="display:none;">Thin slices of meat roasted on a spit, wrapped in lavash with vegetables and sauces</p>
+                <div class="button-container" style="display: none;">
+                    <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+                    <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+                </div>
+                <button class="btn add-btn" id="btn1" onclick="addItem(this)">Add</button>  
+            </div>
+            <div class="item">
+                <div class="image-container">
+                    <img src="2.png" alt="French Fries" class="img">  
+                    <span class="item-count" style="display: none;">0</span>
+                </div>
+                <p class="item-price">1500₸</p>
+                <p class="item-name">French Fries</p>
+                <p class="description" onclick="toggleDescription(this)">Crispy...</p>
+                <p class="full-description" onclick="hideDescription(this)" style="display:none;">Crispy potato sticks, perfect as a side dish for many meals</p>
+                <div class="button-container" style="display: none;">
+                    <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+                    <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+                </div>
+                <button class="btn" id="btn2" onclick="addItem(this)">Add</button>
+            </div>
+            <div class="item">
+                <div class="image-container">
+                    <img src="4.png" alt="Burger" class="img">  
+                    <span class="item-count" style="display: none;">0</span>
+                </div>
+                <p class="item-price">1500₸</p>
+                <p class="item-name">Burger</p>
+                <p class="description" onclick="toggleDescription(this)">Classic...</p>
+                <p class="full-description" onclick="hideDescription(this)" style="display:none;">Classic burger with beef patty, served on a bun with various toppings</p>
+                <div class="button-container" style="display: none;">
+                    <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+                    <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+                </div>
+                <button class="btn" id="btn3" onclick="addItem(this)">Add</button>
+            </div>
+            <div class="item">
+                <div class="image-container">
+                    <img src="10.png" alt="Caesar Salad" class="img">  
+                    <span class="item-count" style="display: none;">0</span>
+                </div>
+                <p class="item-price">1500₸</p>
+                <p class="item-name">Caesar Salad</p>
+                <p class="description" onclick="toggleDescription(this)">Crispy...</p>
+                <p class="full-description" onclick="hideDescription(this)" style="display:none;">Crispy salad with parmesan, croutons and creamy dressing. Great choice for a light lunch</p>
+                <div class="button-container" style="display: none;">
+                    <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+                    <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+                </div>
+                <button class="btn" id="btn4" onclick="addItem(this)">Add</button>
+            </div>
+            <div class="item">
+                <div class="image-container">
+                    <img src="9.png" alt="Curry" class="img">  
+                    <span class="item-count" style="display: none;">0</span>
+                </div>
+                <p class="item-price">1500₸</p>
+                <p class="item-name">Curry</p>
+                <p class="description" onclick="toggleDescription(this)">Tender ch...</p>
+                <p class="full-description" onclick="hideDescription(this)" style="display:none;">Tender chicken cooked in tomato sauce with butter, cream and spices. Served with rice or bread</p>
+                <div class="button-container" style="display: none;">
+                    <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+                    <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+                </div>
+                <button class="btn" id="btn5" onclick="addItem(this)">Add</button>
+            </div>
+            <div class="item">
+                <div class="image-container">
+                    <img src="6.png" alt="Plov" class="img">  
+                    <span class="item-count" style="display: none;">0</span>
+                </div>
+                <p class="item-price">1500₸</p>
+                <p class="item-name">Plov</p>
+                <p class="description" onclick="toggleDescription(this)">Traditio...</p>
+                <p class="full-description" onclick="hideDescription(this)" style="display:none;">Traditional Uzbek dish made with rice, meat, carrots and spices. A hearty and aromatic meal</p>
+                <div class="button-container" style="display: none;">
+                    <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+                    <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+                </div>
+                <button class="btn" id="btn6" onclick="addItem(this)">Add</button>
+            </div>
+        </div>
+        <h2>Drinks</h2>
+        <div class="inner" id="drinks-menu">
+            <div class="item">
+                <div class="image-container">
+                    <img src="3.png" alt="Iced Coffee" class="img">  
+                    <span class="item-count" style="display: none;">0</span>
+                </div>
+                <p class="item-price">1500₸</p>
+                <p class="item-name">Iced Coffee</p>
+                <p class="description" onclick="toggleDescription(this)">Refresh...</p>
+                <p class="full-description" onclick="hideDescription(this)" style="display:none;">Refreshing drink made from chilled coffee, perfect for hot weather</p>
+                <div class="button-container" style="display: none;">
+                    <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+                    <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+                </div>
+                <button class="btn" id="btn7" onclick="addItem(this)">Add</button>
+            </div>
+            <div class="item">
+                <div class="image-container">
+                    <img src="5.png" alt="Mojito" class="img">  
+                    <span class="item-count" style="display: none;">0</span>
+                </div>
+                <p class="item-price">1500₸</p>
+                <p class="item-name">Mojito</p>
+                <p class="description" onclick="toggleDescription(this)">Invigorat...</p>
+                <p class="full-description" onclick="hideDescription(this)" style="display:none;">Invigorating cocktail with mint, lime, sugar and soda</p>
+                <div class="button-container" style="display: none;">
+                    <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+                    <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+                </div>
+                <button class="btn" id="btn8" onclick="addItem(this)">Add</button>
+            </div>
+            <div class="item">
+                <div class="image-container">
+                    <img src="11.png" alt="Tea" class="img">  
+                    <span class="item-count" style="display: none;">0</span>
+                </div>
+                <p class="item-price">1500₸</p>
+                <p class="item-name">Tea</p>
+                <p class="description" onclick="toggleDescription(this)">Hot rela...</p>
+                <p class="full-description" onclick="hideDescription(this)" style="display:none;">Hot relaxing tea with milk, served with tary, navat and honey</p>
+                <div class="button-container" style="display: none;">
+                    <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+                    <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+                </div>
+                <button class="btn" id="btn9" onclick="addItem(this)">Add</button>
+            </div>
+            <div class="item">
+                <div class="image-container">
+                    <img src="12.png" alt="Chocolate Milkshake" class="img">  
+                    <span class="item-count" style="display: none;">0</span>
+                </div>
+                <p class="item-price">1500₸</p>
+                <p class="item-name">Choco Milkshake</p>
+                <p class="description" onclick="toggleDescription(this)">Thick...</p>
+                <p class="full-description" onclick="hideDescription(this)" style="display:none;">Chocolate milkshake: Thick, sweet and creamy drink with chocolate flavor</p>
+                <div class="button-container" style="display: none;">
+                    <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+                    <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+                </div>
+                <button class="btn" id="btn10" onclick="addItem(this)">Add</button>
+            </div>
+            <div class="item">
+                <div class="image-container">
+                    <img src="14.png" alt="Lemonade" class="img">  
+                    <span class="item-count" style="display: none;">0</span>
+                </div>
+                <p class="item-price">1500₸</p>
+                <p class="item-name">Lemonade</p>
+                <p class="description" onclick="toggleDescription(this)">Fresh dr...</p>
+                <p class="full-description" onclick="hideDescription(this)" style="display:none;">Fresh drink made from lemons, water and sugar. Perfect for quenching thirst</p>
+                <div class="button-container" style="display: none;">
+                    <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+                    <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+                </div>
+                <button class="btn" id="btn11" onclick="addItem(this)">Add</button>
+            </div>
+            <div class="item">
+                <div class="image-container">
+                    <img src="15.png" alt="Boba Tea" class="img">  
+                    <span class="item-count" style="display: none;">0</span>
+                </div>
+                <p class="item-price">1500₸</p>
+                <p class="item-name">Boba Tea</p>
+                <p class="description" onclick="toggleDescription(this)">Popular...</p>
+                <p class="full-description" onclick="hideDescription(this)" style="display:none;">Popular Taiwanese drink with chewy tapioca balls. Variety of flavors, from traditional to fruit options</p>
+                <div class="button-container" style="display: none;">
+                    <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+                    <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+                </div>
+                <button class="btn" id="btn12" onclick="addItem(this)">Add</button>
+            </div>
+        </div>
+        <h2>Desserts</h2>
+        <div class="inner" id="desserts-menu">
+            <div class="item">
+                <div class="image-container">
+                    <img src="7.png" alt="Ice Cream" class="img">  
+                    <span class="item-count" style="display: none;">0</span>
+                </div>
+                <p class="item-price">1500₸</p>
+                <p class="item-name">Ice Cream</p>
+                <p class="description" onclick="toggleDescription(this)">Natural...</p>
+                <p class="full-description" onclick="hideDescription(this)" style="display:none;">Natural dessert made from milk, cream and flavorings. Available in a wide range of flavors</p>
+                <div class="button-container" style="display: none;">
+                    <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+                    <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+                </div>
+                <button class="btn" id="btn13" onclick="addItem(this)">Add</button>
+            </div>
+            <div class="item">
+                <div class="image-container">
+                    <img src="8.png" alt="Cheesecake" class="img">  
+                    <span class="item-count" style="display: none;">0</span>
+                </div>
+                <p class="item-price">1500₸</p>
+                <p class="item-name">Cheesecake</p>
+                <p class="description" onclick="toggleDescription(this)">Creamy...</p>
+                <p class="full-description" onclick="hideDescription(this)" style="display:none;">Creamy cheese filling on a shortbread base. Served with berries</p>
+                <div class="button-container" style="display: none;">
+                    <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+                    <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+                </div>
+                <button class="btn" id="btn14" onclick="addItem(this)">Add</button>
+            </div>
+            <div class="item">
+                <div class="image-container">
+                    <img src="13.png" alt="Donut" class="img">  
+                    <span class="item-count" style="display: none;">0</span>
+                </div>
+                <p class="item-price">1500₸</p>
+                <p class="item-name">Donut</p>
+                <p class="description" onclick="toggleDescription(this)">Fried...</p>
+                <p class="full-description" onclick="hideDescription(this)" style="display:none;">Fried dough in round shape with glaze, fillings or sprinkles. Sweet dessert</p>
+                <div class="button-container" style="display: none;">
+                    <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+                    <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+                </div>
+                <button class="btn" id="btn15" onclick="addItem(this)">Add</button>
+            </div>
+            <div class="item">
+                <div class="image-container">
+                    <img src="16.png" alt="Chocolate Cake" class="img">  
+                    <span class="item-count" style="display: none;">0</span>
+                </div>
+                <p class="item-price">1500₸</p>
+                <p class="item-name">Chocolate Cake</p>
+                <p class="description" onclick="toggleDescription(this)">Well-so...</p>
+                <p class="full-description" onclick="hideDescription(this)" style="display:none;">Well-soaked aromatic cake with several layers and cream cheese frosting. Served with chocolate glaze</p>
+                <div class="button-container" style="display: none;">
+                    <button class="btn minus-btn" onclick="updateCount(this, -1)">-</button>
+                    <button class="btn plus-btn" onclick="updateCount(this, 1)">+</button>
+                </div>
+                <button class="btn" id="btn16" onclick="addItem(this)">Add</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="usercard" id="usercard"></div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
