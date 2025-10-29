@@ -2,28 +2,142 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Order Web App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Order</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            font-family: 'Humanist', sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: var(--tg-theme-text-color);
+            background: var(--tg-theme-bg-color);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .total-price {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .empty-cart {
+            text-align: center;
+            font-style: italic;
+            margin-top: 50px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Your Menu</h1>
-    <button id="sendOrderBtn">Send Order</button>
 
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <h1 id="orderHeading">Your Order</h1>
+    <div id="order-details"></div>
+
     <script>
+        const menuLanguage = localStorage.getItem('menuLanguage');
+        const orderDetailsDiv = document.getElementById('order-details');
         const tg = window.Telegram.WebApp;
 
-        tg.expand();
+        tg.MainButton.setText("CONTINUE TO PAYMENT");
+        tg.MainButton.color = "#2cab37";
+        tg.MainButton.textColor = "#ffffff";
+        tg.MainButton.isVisible = false;
 
-        // Example order data
-        const orderData = JSON.stringify([
-            { name: "Burger", count: 2, totalPrice: 2000 },
-            { name: "Soda", count: 1, totalPrice: 500 }
-        ]);
+        function displayOrderDetails(orderData) {
+            tg.MainButton.isVisible = true;
+            tg.BackButton.isVisible = true;
 
-        document.getElementById("sendOrderBtn").addEventListener("click", function() {
+            if (!orderData) {
+                displayEmptyOrderMessage();
+                return;
+            }
+
+            let items;
+            try {
+                items = JSON.parse(orderData);
+            } catch (e) {
+                console.error("Error parsing order data:", e);
+                displayEmptyOrderMessage();
+                return;
+            }
+
+            if (!items || items.length === 0) {
+                displayEmptyOrderMessage();
+                return;
+            }
+
+            let htmlContent = '<ul>';
+            let totalPrice = 0;
+            let hasItems = false;
+
+            items.forEach(item => {
+                if (item.count > 0) {
+                    const itemTotalPrice = (item.totalPrice || 0).toFixed(2);
+                    htmlContent += `<li>${item.count} x ${item.name}: ${itemTotalPrice}₸</li>`;
+                    totalPrice += item.totalPrice || 0;
+                    hasItems = true;
+                }
+            });
+
+            let totalPriceLabel = menuLanguage === 'en' ? 'Total' : 'Барлығы';
+
+            if (totalPrice.toFixed(2) !== '0.00' && hasItems) {
+                htmlContent += `<div class="total-price">${totalPriceLabel}: ${totalPrice.toFixed(2)}₸</div>`;
+                tg.MainButton.isVisible = true;
+            } else {
+                displayEmptyOrderMessage();
+                return;
+            }
+
+            orderDetailsDiv.innerHTML = htmlContent;
+        }
+
+        function displayEmptyOrderMessage() {
+            let emptyMessage = menuLanguage === 'en' ? 'Your cart is empty.' : 'Ештеңе таңдаған жоқсыз.';
+            orderDetailsDiv.innerHTML = `<div class="empty-cart"><p>${emptyMessage}</p></div>`;
+            tg.MainButton.isVisible = false;
+        }
+
+        const orderData = localStorage.getItem('orderData');
+        displayOrderDetails(orderData);
+
+        if (menuLanguage === "en") {
+            Telegram.WebApp.onEvent("backButtonClicked", function() {
+                window.location.href = "menu_en.html";
+            });
+        } else {
+            Telegram.WebApp.onEvent("backButtonClicked", function() {
+                window.location.href = "index.html";
+            });
+        }
+
+        Telegram.WebApp.onEvent("mainButtonClicked", function() {
+            const orderData = localStorage.getItem('orderData');
             console.log("Sending order data:", orderData);
-            tg.sendData(orderData);
-            tg.close();
+            
+            if (orderData) {
+                try {
+                    tg.sendData(orderData);
+                    setTimeout(() => {
+                        tg.close();
+                    }, 1000);
+                } catch (error) {
+                    console.error("Error sending data:", error);
+                    alert("Error sending order. Please try again.");
+                }
+            } else {
+                alert('No order data found.');
+            }
         });
     </script>
 </body>
